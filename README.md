@@ -1,14 +1,15 @@
 # Event Management Progress Update
 
 ## Current Routes
-- **View Event**  
-  `/events/{id}` → Show individual event page with details and comments
+- **User Authentication**
+  - `/register` → Register a new user (first name, surname, email, password, contact number, street address)
+  - `/login` → Login with email + password
+  - `/logout` → Logout the current user
 
-- **Create Event**  
-  `/events/create` → Form to create a new event (supports image upload)
-
-- **Add Comment**  
-  `/events/{id}/comment` → Post a new comment for a specific event
+- **Events**
+  - `/events/{id}` → Show individual event page with details and comments
+  - `/events/create` → Form to create a new event (supports image upload)
+  - `/events/{id}/comment` → Post a new comment for a specific event
 
 ---
 

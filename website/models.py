@@ -5,8 +5,11 @@ from flask_login import UserMixin
 class User(db.Model, UserMixin):
     __tablename__ = 'users' # good practice to specify table name
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), index=True, unique=True, nullable=False)
-    emailid = db.Column(db.String(100), index=True, nullable=False)
+    first_name = db.Column(db.String(50), index=True, nullable=False)
+    last_name = db.Column(db.String(50), index=True, nullable=False)
+    email = db.Column(db.String(100), index=True, unique=True, nullable=False)
+    contact_number = db.Column(db.String(20))
+    street_address = db.Column(db.String(200))
 	# password should never stored in the DB, an encrypted password is stored
 	# the storage should be at least 255 chars long, depending on your hashing algorithm
     password_hash = db.Column(db.String(255), nullable=False)
