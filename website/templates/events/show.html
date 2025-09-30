@@ -1,0 +1,52 @@
+{% extends 'base.html' %} {% from 'bootstrap5/form.html' import render_form %}
+{% block content %}
+
+<div class="container">
+  <div class="row mt-5 mb-3">
+    <div class="col-md-12">
+      <div class="float-left">
+        <h1 class="mb-0">{{ event.title }}</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card my-3">
+        <div class="card-body">
+          <div class="media">
+            <img class="align-self-start mr-3" src="{{ event.image }}" style="width: 300;"/>
+            <div class="media-body">
+              <h2 class="mt-0">{{ event.name }}</h2>
+              <p>{{ event.description }}</p>
+              <a href="#" class="btn btn-danger">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <!-- Comments -->
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Comments</h2>
+    </div>
+  </div>
+
+  <div class="row border-bottom">
+    {{ render_form(form,"/events/{0}/comment".format(event.id)) }} {% for
+    comment in event.comments %}
+    <div class="col-md-12">
+      <b
+        >{{ comment.user }}
+        <span class="ml-2 text-muted">{{ comment.created_at }}</span></b
+      >
+      <p>{{ comment.text }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

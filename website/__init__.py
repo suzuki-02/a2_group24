@@ -1,5 +1,5 @@
 # import flask - from 'package' import 'Class'
-from flask import Flask 
+from flask import Flask
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -40,5 +40,8 @@ def create_app():
 
    from . import auth
    app.register_blueprint(auth.auth_bp)
+
+   from . import events
+   app.register_blueprint(events.events_bp)
    
    return app
