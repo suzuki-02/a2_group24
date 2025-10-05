@@ -4,18 +4,84 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>IAB207 Assignment 2</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
     <!-- Header -->
     <header>
-        <h1>This is the starter for assessment 2</h1>
+        <!-- Header -->
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+            <div class="container">
+
+                <!-- Brand -->
+
+                <a class="navbar-brand fw-bold" href="{{ url_for('main.index') }}" target="_top">
+                    <i class="fa-solid fa-ticket"></i> EventFinder
+                </a>
+
+                <!-- Hamburger -->
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Collapsible content -->
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+
+                    <!-- Search bar -->
+
+                    <form class="d-flex my-2 my-lg-0 w-100" role="search">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input type="text" class="form-control" placeholder="Search Events">
+                            <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
+                            <input type="text" class="form-control" placeholder="Location">
+                            <button class="btn btn-primary" type="submit" disabled>
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Nav buttons -->
+
+                    <ul class="navbar-nav ms-auto mt-2 mt-lg-0 gap-2 ps-lg-2">
+                        <li class="nav-item">
+                            <a class="btn btn-outline-secondary w-100 btn-nowrap" href="#"
+                                target="_top">
+                                <i class="fa-solid fa-calendar-check me-1"></i> My Events
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/create" target="_top">
+                                <i class="fa-solid fa-calendar-plus me-1"></i> Create Event
+                            </a>
+                        </li>
+                        {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="btn btn-primary w-100" href="{{ url_for('auth.logout') }}">Logout</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="btn btn-primary w-100" href="{{ url_for('auth.login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary w-100" href="{{ url_for('auth.register') }}">Register</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
 
         <!-- The code below is for debugging routes. You can remove it -->
-        {% if current_user.is_authenticated %}
+        <!-- {% if current_user.is_authenticated %}
         <h2>Hello, {{ current_user.first_name }}!</h2>
         <a href="{{ url_for('auth.logout') }}">Logout</a>
         {% else %}
@@ -28,7 +94,7 @@
         <a href="{{ url_for('auth.register') }}">Register</a>
         <a href="{{ url_for('main.index') }}">Home</a>
         <a href="/events/1">Event-1</a>
-        <a href="/events/create">Create an event</a>
+        <a href="/events/create">Create an event</a> -->
         <!-- End debug section -->
 
         <!-- Navbar -->
@@ -58,11 +124,76 @@
 
     {% endblock %}
 
-    <footer class="footer">
-        <!-- Your footer should go here -->
-        <p>Copyright &copy; 2025</p>
+    <!-- Footer -->
+
+    <footer class="bg-dark text-light pt-5 pb-4">
+        <div class="container">
+            <div class="row">
+
+                <!-- Logo and slogan -->
+
+                <div class="col-12 col-md-3 mb-4">
+                    <h5 class="mb-3"><a class="navbar-brand fw-bold" href="index.html" target="_top"><i
+                                class="fa-solid fa-ticket"></i>
+                            EventFinder</a></h5>
+                    <p class="small">Your one-stop platform for discovering and booking events.</p>
+                </div>
+
+                <!-- Quick links -->
+
+                <div class="col-6 col-md-2 mb-4">
+                    <h6 class="text-uppercase">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="bookinghistory.html" class="text-light text-decoration-none">My Events</a></li>
+                        <li><a href="eventmgmt.html" class="text-light text-decoration-none">Create Event</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Login</a></li>
+                        <li><a href="signup.html" class="text-light text-decoration-none">Sign Up</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+
+                <div class="col-6 col-md-2 mb-4">
+                    <h6 class="text-uppercase">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">FAQ</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Contact Us</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Terms & Conditions</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social links -->
+
+                <div class="col-12 col-md-3 mb-4">
+                    <h6 class="text-uppercase">Follow Us</h6>
+                    <div class="d-flex gap-2">
+                        <a href="https://www.facebook.com/" target="_blank" class="text-light fs-5"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/" target="_blank" class="text-light fs-5"><i
+                                class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/" target="_blank" class="text-light fs-5"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/" target="_blank" class="text-light fs-5"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Separator -->
+
+            <hr class="bg-secondary">
+
+            <!-- Copyright -->
+
+            <div class="d-flex justify-content-between align-items-center pt-3">
+                <p class="mb-0 small">&copy; 2025 EventFinder. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
