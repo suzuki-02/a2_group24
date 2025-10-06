@@ -10,6 +10,8 @@
   - `/events/{id}` → Show individual event page with details and comments
   - `/events/create` → Form to create a new event (supports image upload)
   - `/events/{id}/comment` → Post a new comment for a specific event
+  - `/events/<id>/purchase` → Purchase tickets for an event
+  - `/events/books` → Displays the logged-in user’s booking history
 
 ---
 
