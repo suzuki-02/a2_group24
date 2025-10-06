@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField
-from wtforms.validators import InputRequired, Email, EqualTo
+from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField, DateField, DecimalField, IntegerField
+from wtforms.validators import InputRequired, Email, EqualTo, NumberRange
 from flask_wtf.file import FileRequired, FileField, FileAllowed
 
 ALLOWED_FILE = {'PNG', 'JPG', 'JPEG', 'png', 'jpg', 'jpeg'}
@@ -29,6 +29,13 @@ class RegisterForm(FlaskForm):
 # Create new event
 class EventForm(FlaskForm):
     title = StringField('Event Title', validators=[InputRequired()])
+    date = DateField('Event Date', format='%Y-%m-%d', validators=[InputRequired()])
+    price = DecimalField('Ticket Price ($)', places=2, validators=[
+        InputRequired(), NumberRange(min=0, message="Price must be positive")
+    ])
+    quantity = IntegerField('Ticket Quantity', validators=[
+        InputRequired(), NumberRange(min=1, message="At least 1 ticket required")
+    ])
     description = TextAreaField('Description', validators=[InputRequired()])
     image = FileField('Event Image', validators=[
     FileRequired(message = 'Image cannot be empty'),
@@ -39,3 +46,11 @@ class EventForm(FlaskForm):
 class CommentForm(FlaskForm):
     text = TextAreaField('Comment', [InputRequired()])
     submit = SubmitField('Create')
+
+# Purchase form
+class PurchaseForm(FlaskForm):
+    quantity = IntegerField('Quantity', validators=[
+        InputRequired(message="Please enter the number of tickets"),
+        NumberRange(min=1, message="You must purchase at least one ticket")
+    ])
+    submit = SubmitField('Purchase')
