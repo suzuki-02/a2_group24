@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  <h3>Search results for “{{ q }}”{% if loc %} in “{{ loc }}”{% endif %}</h3>
+
+  {% if events|length == 0 %}
+    <div class="alert alert-info mt-3">No events matched your search.</div>
+  {% else %}
+    <div class="row row-cols-1 row-cols-md-3 g-3 mt-2">
+      {% for ev in events %}
+      <div class="col">
+        <div class="card h-100">
+          {% if ev.image %}
+            <img class="card-img-top" src="{{ url_for('static', filename=ev.image) }}" alt="{{ ev.title }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ ev.title }}</h5>
+            <p class="card-text">
+              {{ (ev.description or '')[:120] }}{% if ev.description and ev.description|length > 120 %}…{% endif %}
+            </p>
+            <a class="btn btn-primary" href="{{ url_for('event.show', id=ev.id) }}">View details</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
