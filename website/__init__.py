@@ -1,10 +1,34 @@
 # import flask - from 'package' import 'Class'
-from flask import Flask
+from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
+# (optional logging)
+import logging
+from logging.handlers import RotatingFileHandler
+
 db = SQLAlchemy()
+
+# ---- error handlers ----
+def register_error_handlers(app):
+    @app.errorhandler(404)
+    def not_found(e):
+        # lightweight log for missing routes
+        app.logger.info("404 at %s", request.path)
+        return render_template("errors/404.html"), 404
+
+    @app.errorhandler(500)
+    def server_error(e):
+        # ensure any failed transaction is rolled back
+        try:
+            db.session.rollback()
+        except Exception:
+            pass
+        # full stacktrace in logs
+        app.logger.exception("500 error at %s", request.path)
+        return render_template("errors/500.html"), 500
+# ------------------------
 
 # create a function that creates a web application
 # a web server will run this web application
@@ -43,5 +67,15 @@ def create_app():
 
    from . import events
    app.register_blueprint(events.events_bp)
-   
+
+   # (optional) basic rotating file logger in production
+   if not app.debug:
+      handler = RotatingFileHandler('instance/app.log', maxBytes=1_000_000, backupCount=3)
+      handler.setLevel(logging.INFO)
+      handler.setFormatter(logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s'))
+      app.logger.addHandler(handler)
+
+   # register 404/500 handlers
+   register_error_handlers(app)
+
    return app
