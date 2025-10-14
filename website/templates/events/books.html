@@ -1,36 +1,54 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="container mt-5">
-  <h2>My Bookings</h2>
-  <hr />
-  
-  <!-- Orders Table -->
-  {% if orders %}
-  <table class="table table-striped mt-3">
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>Event</th>
-        <th>Quantity</th>
-        <th>Total Price ($)</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for order in orders %}
-      <tr>
-        <td>{{ order.id }}</td>
-        <td>{{ order.event.title }}</td>
-        <td>{{ order.quantity }}</td>
-        <td>${{ "%.2f"|format(order.total_price) }}</td>
-        <td>{{ order.order_date.strftime("%Y-%m-%d") }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="container py-4">
+  <!-- Header row: title left, Create Event button right -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">My Events</h1>
+    <a href="/events/create" class="btn btn-primary">
+      <i class="fa-solid fa-calendar-plus me-1"></i> Create Event
+    </a>
+  </div>
+
+  {% if not orders or orders|length == 0 %}
+    <div class="alert alert-info">
+      You haven’t booked any events yet.
+      <a href="{{ url_for('event.create') }}" class="alert-link">Create one</a> or browse events.
+    </div>
   {% else %}
-  <p class="text-muted">You have no previous purchases.</p>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th scope="col">Event</th>
+            <th scope="col">Date</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Total</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>
+              <a href="{{ url_for('event.show', id=order.event.id) }}" class="text-decoration-none">
+                {{ order.event.title }}
+              </a>
+            </td>
+            <td>{{ order.event.date }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>${{ "%.2f"|format(order.total_price or 0) }}</td>
+            <td class="text-end">
+              <a href="{{ url_for('event.show', id=order.event.id) }}" class="btn btn-sm btn-outline-secondary">
+                View
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   {% endif %}
 </div>
+
 {% endblock %}

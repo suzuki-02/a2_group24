@@ -1,13 +1,25 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IAB207 Assignment 2</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../static/style/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IAB207 Assignment 2</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../static/style/styles.css">
+
+  <style>
+    /* Uniform navbar button sizing */
+    .nav-btn {
+      min-width: 150px;         /* consistent width */
+      white-space: nowrap;      /* keep label on one line */
+      justify-content: center;  /* center icon/text */
+    }
+    @media (max-width: 992px) {
+      .nav-btn { min-width: auto; }
+    }
+  </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -27,7 +39,7 @@
           </button>
 
           <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Single search field (location removed) -->
+            <!-- Single search field (no location) -->
             <form class="d-flex my-2 my-lg-0 w-100" role="search">
               <div class="input-group">
                 <span class="input-group-text" aria-hidden="true">
@@ -40,27 +52,34 @@
               </div>
             </form>
 
-            <ul class="navbar-nav ms-auto mt-2 mt-lg-0 gap-2 ps-lg-2">
+            <!-- Buttons inline and uniform -->
+            <ul class="navbar-nav ms-auto mt-2 mt-lg-0 gap-2 ps-lg-2 d-flex flex-row flex-nowrap align-items-center">
               <li class="nav-item">
-                <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/books" target="_top">
+                <a class="btn btn-outline-secondary btn-sm nav-btn d-inline-flex align-items-center" href="/events/books" target="_top">
                   <i class="fa-solid fa-calendar-check me-1"></i> My Events
                 </a>
               </li>
               <li class="nav-item">
-                <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/create" target="_top">
+                <a class="btn btn-outline-secondary btn-sm nav-btn d-inline-flex align-items-center" href="/events/create" target="_top">
                   <i class="fa-solid fa-calendar-plus me-1"></i> Create Event
                 </a>
               </li>
               {% if current_user.is_authenticated %}
               <li class="nav-item">
-                <a class="btn btn-primary w-100" href="{{ url_for('auth.logout') }}">Logout</a>
+                <a class="btn btn-primary btn-sm nav-btn d-inline-flex align-items-center" href="{{ url_for('auth.logout') }}">
+                  Logout
+                </a>
               </li>
               {% else %}
               <li class="nav-item">
-                <a class="btn btn-primary w-100" href="{{ url_for('auth.login') }}">Login</a>
+                <a class="btn btn-primary btn-sm nav-btn d-inline-flex align-items-center" href="{{ url_for('auth.login') }}">
+                  Login
+                </a>
               </li>
               <li class="nav-item">
-                <a class="btn btn-primary w-100" href="{{ url_for('auth.register') }}">Register</a>
+                <a class="btn btn-primary btn-sm nav-btn d-inline-flex align-items-center" href="{{ url_for('auth.register') }}">
+                  Register
+                </a>
               </li>
               {% endif %}
             </ul>
@@ -87,7 +106,7 @@
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Footer (sticks to bottom via flex layout on body) -->
+  <!-- Footer -->
   <footer class="bg-dark text-light pt-5 pb-4">
     <div class="container">
       <div class="row">
