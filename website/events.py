@@ -70,7 +70,6 @@ def comment(id):
       db.session.commit() 
 
       # flashing a message which needs to be handled by the html
-      # flash('Your comment has been added', 'success')  
       flash('Your comment has been added', 'success') 
     # using redirect sends a GET request to event.show
     return redirect(url_for('event.show', id=id))
@@ -123,3 +122,67 @@ def my_bookings():
     # get all orders by current user
     orders = current_user.orders  # because of the backref
     return render_template('events/books.html', orders=orders)
+
+@events_bp.route('/my_events')
+@login_required
+def my_events():
+    # Fetch all events created by this user
+    events = Event.query.filter_by(creator_id=current_user.id).order_by(Event.date.desc()).all()
+    return render_template('events/my_events.html', events=events)
+
+@events_bp.route('/<id>/update', methods=['GET', 'POST'])
+@login_required
+def update(id):
+    event = db.session.scalar(db.select(Event).where(Event.id==id))
+    if event is None:
+        flash("Event not found", "danger")
+        return redirect(url_for('main.index'))
+    # only the creator can update
+    if event.creator != current_user:
+        flash("You do not have permission to update this event", "danger")
+        return redirect(url_for('event.show', id=event.id))
+    # check if event is cancelled
+    if event.status == "Cancelled":
+      flash("This event has been cancelled and cannot be updated.", "warning")
+      return redirect(url_for('event.show', id=event.id))
+    
+    form = EventForm()
+    if form.validate_on_submit():
+        # call the function that checks and returns image
+        if form.image.data:
+            db_file_path = check_upload_file(form)
+            event.image = db_file_path
+        event.title = form.title.data
+        event.date = form.date.data
+        event.price = form.price.data
+        event.quantity = form.quantity.data
+        event.description = form.description.data
+        db.session.commit()
+        flash("Event updated successfully", "success")
+        return redirect(url_for('event.show', id=event.id))
+    elif request.method == 'GET':
+        form.title.data = event.title
+        form.date.data = event.date
+        form.price.data = event.price
+        form.quantity.data = event.quantity
+        form.description.data = event.description
+    return render_template('events/create.html', form=form, event=event)
+
+@events_bp.route('/<id>/cancel')
+@login_required
+def cancel(id):
+    event = db.session.scalar(db.select(Event).where(Event.id == id))
+    if event is None:
+        flash("Event not found", "danger")
+        return redirect(url_for('event.my_events'))
+
+    # only creator can cancel
+    if event.creator != current_user:
+        flash("You do not have permission to cancel this event", "danger")
+        return redirect(url_for('event.show', id=event.id))
+
+    event.cancel()  # sets status = "Cancelled"
+    db.session.commit()
+
+    flash("Event has been cancelled successfully.", "warning")
+    return redirect(url_for('event.my_events'))

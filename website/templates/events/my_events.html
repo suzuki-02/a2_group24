@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2>My Events</h2>
+
+  {% if events %}
+  <table class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Tickets</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for event in events %}
+      <tr>
+        <td>{{ event.title }}</td>
+        <td>{{ event.date.strftime('%Y-%m-%d') }}</td>
+        <td>{{ event.status }}</td>
+        <td>{{ event.quantity }}</td>
+        <td>
+          <a href="{{ url_for('event.show', id=event.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+          {% if event.status != 'Cancelled' %}
+          <a href="{{ url_for('event.update', id=event.id) }}" class="btn btn-sm btn-outline-warning">Update</a>
+          <a href="{{ url_for('event.cancel', id=event.id) }}" class="btn btn-sm btn-outline-danger"
+            onclick="return confirm('Are you sure you want to cancel this event?\n\n⚠️ Once cancelled, it cannot be edited or reopen.');">Cancel</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="text-muted">You haven’t created any events yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -29,7 +29,7 @@ def login():
             login_user(user)
             return redirect(url_for('main.index'))
         else:
-            flash(error)
+            flash(error, 'danger')
     return render_template('user.html', form=login_form, heading='Login')
 
 @auth_bp.route('/logout', methods=['GET', 'POST'])
@@ -51,7 +51,7 @@ def register():
         #check if a user exists with the email
         user = db.session.scalar(db.select(User).where(User.email==email))
         if user:#this returns true when user is not None
-            flash('Email already exists, please try another')
+            flash('Email already exists, please try another', 'danger')
             return redirect(url_for('auth.register'))
         #create a new User model object
         new_user = User(first_name=first_name, last_name=last_name, contact_number=contact_number, street_address=street_address, email=email, password_hash=password_hash)
