@@ -14,12 +14,13 @@ def create_app():
    db.init_app(app)
    Bootstrap5(app)
 
+   # initialise the login manager
    login_manager = LoginManager()
    login_manager.login_view = 'auth.login'
    login_manager.init_app(app)
-
-   from .models import User, Event
-
+   
+   # create a user loader function takes userid and returns User
+   from .models import User  # importing here to avoid circular references
    @login_manager.user_loader
    def load_user(user_id):
       return db.session.scalar(db.select(User).where(User.id == user_id))
