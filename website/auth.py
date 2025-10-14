@@ -51,7 +51,7 @@ def register():
         #check if a user exists with the email
         user = db.session.scalar(db.select(User).where(User.email==email))
         if user:#this returns true when user is not None
-            flash('Username already exists, please try another')
+            flash('Email already exists, please try another')
             return redirect(url_for('auth.register'))
         #create a new User model object
         new_user = User(first_name=first_name, last_name=last_name, contact_number=contact_number, street_address=street_address, email=email, password_hash=password_hash)
