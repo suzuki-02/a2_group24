@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request,redirect, url_for
+from sqlalchemy import or_
 from datetime import datetime, timedelta
 from .models import Event
 from . import db
@@ -90,3 +91,27 @@ def filter_events():
     # 👇 Only render the event cards section, not the full page
     return render_template('_event_cards.html', events=events)
 
+@main_bp.route('/search')
+def search():
+    # get inputs safely
+    q   = (request.args.get('q') or '').strip()
+    loc = (request.args.get('loc') or '').strip()
+
+    # if nothing was typed, just go back to home (avoids None returns)
+    if not q and not loc:
+        return redirect(url_for('main.index'))
+
+    # build query
+    query = Event.query
+    if q:
+        like = f"%{q}%"
+        query = query.filter(or_(Event.title.ilike(like),
+                                 Event.description.ilike(like)))
+    # only filter by location if your model has a 'location' column
+    if loc and hasattr(Event, 'location'):
+        query = query.filter(Event.location.ilike(f"%{loc}%"))
+
+    events = query.order_by(Event.date.asc()).all()
+
+    # ALWAYS return a template
+    return render_template('search_results.html', q=q, loc=loc, events=events)
