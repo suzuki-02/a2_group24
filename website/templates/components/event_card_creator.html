@@ -1,0 +1,22 @@
+{% extends "components/_event_card_base.html" %}
+
+{% block card_content %}
+  <p class="card-text mb-1"><strong>Date:</strong> {{ event.date.strftime('%b %d, %Y') }}</p>
+  <!-- <p class="card-text mb-1"><strong>Status:</strong> {{ event.status }}</p> -->
+  <p class="card-text mb-3"><strong>Tickets Left:</strong> {{ event.quantity }}</p>
+{% endblock %}
+
+{% block card_footer %}
+  <div class="card-footer bg-transparent border-0 d-flex gap-2">
+    {% if event.status != 'Cancelled' %}
+    <a href="{{ url_for('event.update', id=event.id) }}" class="btn btn-primary btn-sm flex-fill">Update</a>
+    <a
+      href="{{ url_for('event.cancel', id=event.id) }}"
+      class="btn btn-danger btn-sm flex-fill"
+      onclick="return confirm('Are you sure you want to cancel this event?\n\n⚠️ Once cancelled, it cannot be edited or reopened.');"
+    >
+      Cancel
+    </a>
+    {% endif %}
+  </div>
+{% endblock %}

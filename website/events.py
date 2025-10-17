@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from .models import Event, Comment, Order
 from flask_login import current_user, login_required
-from .forms import EventForm, CommentForm, PurchaseForm
+from .forms import EventForm, CommentForm, PurchaseForm, EventUpdateForm
 from . import db
 import os
 from werkzeug.utils import secure_filename
@@ -146,7 +146,7 @@ def update(id):
       flash("This event has been cancelled and cannot be updated.", "warning")
       return redirect(url_for('event.show', id=event.id))
     
-    form = EventForm()
+    form = EventUpdateForm()
     if form.validate_on_submit():
         # call the function that checks and returns image
         if form.image.data:
