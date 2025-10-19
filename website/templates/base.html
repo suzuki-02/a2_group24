@@ -145,15 +145,19 @@
 
                 <!-- Quick links -->
 
-                <div class="col-6 col-md-2 mb-4">
-                    <h6 class="text-uppercase">Quick Links</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="bookinghistory.html" class="text-light text-decoration-none">My Events</a></li>
-                        <li><a href="eventmgmt.html" class="text-light text-decoration-none">Create Event</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Login</a></li>
-                        <li><a href="signup.html" class="text-light text-decoration-none">Sign Up</a></li>
-                    </ul>
-                </div>
+               <div class="col-6 col-md-2 mb-4">
+  <h6 class="text-uppercase">Quick Links</h6>
+  <ul class="list-unstyled">
+    <li><a href="{{ url_for('main.index') }}" class="text-light text-decoration-none">Home</a></li>
+    <li><a href="{{ url_for('event.my_bookings') }}" class="text-light text-decoration-none">My Bookings</a></li>
+    <li><a href="{{ url_for('event.create') }}" class="text-light text-decoration-none">Create Event</a></li>
+    <li><a href="{{ url_for('auth.login') }}" class="text-light text-decoration-none">Login</a></li>
+    <li><a href="{{ url_for('auth.register') }}" class="text-light text-decoration-none">Sign Up</a></li>
+  </ul>
+</div>
+
+
+
 
                 <!-- Support -->
 
