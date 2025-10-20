@@ -5,12 +5,10 @@ from .models import User
 from .forms import LoginForm, RegisterForm
 from . import db
 
-# Create a blueprint - make sure all BPs have unique names
 auth_bp = Blueprint('auth', __name__)
 
-# this is a hint for a login function
 @auth_bp.route('/login', methods=['GET', 'POST'])
-# view function
+
 def login():
     login_form = LoginForm()
     error = None
@@ -20,14 +18,14 @@ def login():
         user = db.session.scalar(db.select(User).where(User.email==email))
         if user is None:
             error = 'Incorrect email'
-        elif not check_password_hash(user.password_hash, password): # takes the hash and cleartext password
+        elif not check_password_hash(user.password_hash, password):
             error = 'Incorrect password'
         if error is None:
             login_user(user)
-            nextp = request.args.get('next') # this gives the url from where the login page was accessed
+            nextp = request.args.get('next')
             print(nextp)
             if nextp is None or not nextp.startswith('/'):
-                return redirect(url_for('main.index')) # change to the page you want
+                return redirect(url_for('main.index'))
             return redirect(nextp)
         else:
             flash(error)
@@ -35,7 +33,7 @@ def login():
 
 @auth_bp.route('/logout', methods=['GET', 'POST'])
 def logout():
-    logout_user() # will remove the user id from the session
+    logout_user()
     return redirect(url_for('main.index'))
 
 @auth_bp.route('/register', methods=['GET','POST'])
@@ -50,9 +48,8 @@ def register():
             email = register_form.email.data,
             password_hash = generate_password_hash(register_form.password.data)
         )
-        # add the object to the db session
+        
         db.session.add(user)
-        # commit to the database
         db.session.commit()
         return redirect(url_for('auth.login'))
     return render_template('user.html', form=register_form, heading='Register')
