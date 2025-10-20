@@ -1,0 +1,254 @@
+/* ---------------------------
+   Base / Theme
+---------------------------- */
+:root{
+  --bg:#181f28;
+  --panel:#202735;
+  --muted:#9aa3af;
+  --text:#e6e9ee;
+  --brand:#49c39e;
+  --brand-600:#2fb389;
+  --brand-700:#279874;
+  --accent:#3b82f6;
+  --danger:#ef4444;
+  --warning:#f59e0b;
+  --success:#22c55e;
+  --card:#5a626c;
+  --border:rgba(255,255,255,.08);
+  --shadow:0 10px 20px rgba(0,0,0,.25);
+}
+
+html,body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* Improve default Bootstrap contrasts on dark bg */
+.text-muted{ color:var(--muted)!important; }
+a{ color:var(--accent); }
+a:hover{ color:#93c5fd; }
+
+/* ---------------------------
+   Navbar + Search
+---------------------------- */
+.navbar{
+  background:#0f141a!important;
+  border-bottom:1px solid var(--border);
+}
+
+.navbar-brand{
+  color:var(--text)!important;
+  letter-spacing:.3px;
+}
+
+.search-wrap{
+  display:flex; gap:.5rem; width:100%;
+}
+
+/* icon chip left of the input */
+.search-chip{
+  background:var(--panel);
+  border:1px solid var(--border);
+  color:var(--muted);
+  display:flex; align-items:center; justify-content:center;
+  width:44px; border-radius:.75rem;
+}
+
+/* search inputs */
+.search-input,
+.location-input{
+  background:var(--panel)!important;
+  border:1px solid var(--border)!important;
+  color:var(--text)!important;
+  border-radius:.75rem!important;
+}
+
+/* place­holders readable */
+.search-input::placeholder,
+.location-input::placeholder{
+  color:#c7ced8!important;
+  opacity:1;
+}
+
+/* search button */
+.btn-search{
+  background:var(--brand);
+  color:#07281f;
+  border:none;
+  border-radius:.75rem;
+  padding:.65rem .9rem;
+}
+.btn-search:hover{ background:var(--brand-600); }
+
+/* Right-side nav pills (“My Events”, “Create Event”) */
+.nav-cta .btn{
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--text);
+  padding:.6rem 1rem;
+  border-radius:1rem;
+  line-height:1.1;
+  min-height:44px;              /* ensure equal height */
+  display:flex; align-items:center; gap:.45rem;
+}
+.nav-cta .btn:hover{ background:#1e2430; }
+
+/* Ensure both My Events and Create Event look the same width */
+.nav-cta .btn{ min-width:125px; justify-content:center; }
+
+/* Logout button (primary) */
+.btn-primary{
+  background:var(--accent)!important;
+  border:none!important;
+}
+.btn-primary:hover{ filter:brightness(1.05); }
+
+/* ---------------------------
+   Filter Tabs (All / Today / This Weekend)
+---------------------------- */
+.filters{
+  display:flex; gap:1.25rem; align-items:center;
+  padding:1rem 0 .5rem;
+}
+.filters .filter-link{
+  color:#cbd5e1;
+  text-decoration:none;
+  padding:.3rem .1rem;
+  border-bottom:2px solid transparent;
+}
+.filters .filter-link:hover{ color:#e5e7eb; }
+.filters .filter-link.active{
+  color:#fff;
+  border-color:var(--accent);
+}
+
+/* “No events yet — create one” */
+.empty-inline{
+  color:#cbd5e1;
+}
+.empty-inline a{
+  color:#9bd0ff;
+  text-decoration:none;
+}
+.empty-inline a:hover{ color:#c8e5ff; }
+
+/* ---------------------------
+   Event Cards (grid)
+---------------------------- */
+.event-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:1.25rem;
+}
+@media (max-width: 1199px){ .event-grid{ grid-template-columns:repeat(8,1fr);} }
+@media (max-width: 767px){  .event-grid{ grid-template-columns:repeat(4,1fr);} }
+
+.event-col{ grid-column:span 3; }
+@media (max-width:1199px){ .event-col{ grid-column:span 4; } }
+@media (max-width:767px){  .event-col{ grid-column:span 4; } }
+
+.card.event{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:1rem;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.card.event:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,.14);
+  box-shadow:0 14px 30px rgba(0,0,0,.33);
+}
+
+/* image area */
+.event .ratio{ background:#d9d9d9; }
+.object-fit-cover{ object-fit:cover; }
+
+/* body */
+.card.event .card-body{
+  padding:1rem 1rem 1.1rem;
+}
+.card.event .card-title{
+  font-weight:700; letter-spacing:.2px; margin-bottom:.2rem;
+}
+.event .meta{
+  display:flex; gap:.75rem; color:var(--muted); font-size:.925rem;
+}
+
+/* price + status pill row */
+.event .foot{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-top:.6rem;
+}
+.price{ color:#93c5fd; font-weight:600; }
+
+/* status pills */
+.pill{
+  display:inline-flex; align-items:center; gap:.45rem;
+  border-radius:999px; padding:.25rem .6rem; font-size:.85rem;
+}
+.pill-warning{ background:rgba(245,158,11,.16); color:#fbbf24; }
+.pill-danger{  background:rgba(239,68,68,.14);  color:#f87171; }
+.pill-success{ background:rgba(34,197,94,.15); color:#86efac; }
+
+/* ---------------------------
+   Forms & Inputs
+---------------------------- */
+.form-control{
+  background:#0f141a;
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:.75rem;
+}
+.form-control:focus{
+  border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.25);
+}
+
+/* File input tweak */
+input[type="file"].form-control{
+  padding:.55rem .75rem;
+  background:#111722;
+}
+
+/* Buttons */
+.btn{
+  border-radius:.8rem;
+}
+.btn-outline-secondary{
+  border:1px solid var(--border)!important;
+  color:#cfd6df!important;
+}
+.btn-outline-secondary:hover{
+  background:#1f2633!important;
+}
+
+/* ---------------------------
+   Footer
+---------------------------- */
+footer{
+  background:#0d1117!important;
+  border-top:1px solid var(--border);
+}
+footer a{ color:#dbe7ff; }
+footer a:hover{ color:#ffffff; text-decoration:underline; }
+footer .navbar-brand{ color:#e9eef7!important; }
+
+/* ---------------------------
+   Utilities
+---------------------------- */
+.rounded-2xl{ border-radius:1rem; }
+.shadow-soft{ box-shadow:var(--shadow); }
+.badge{ border-radius:999px; }
+hr{ border-color:var(--border); }
+/* Make ALL placeholder text readable across the site */
+::placeholder {
+  color: #bfbfbf !important;   /* light gray */
+  opacity: 1;                  /* make sure it’s fully visible */
+}
+
+/* For dark backgrounds, make it brighter */
+input.form-control::placeholder,
+textarea.form-control::placeholder {
+  color: #cccccc !important;   /* adjust to white (#fff) if needed */
+}

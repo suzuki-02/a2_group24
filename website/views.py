@@ -9,9 +9,10 @@ main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    # Get one event (e.g., the most recent)
-    event = db.session.scalar(db.select(Event).order_by(Event.id.desc()))
-    return render_template('index.html', event=event)
+    events = db.session.scalars(db.select(Event).order_by(Event.date.asc())).all()
+    return render_template('index.html', events=events)
+
+
 # in website/views.py (already done)
 @main_bp.route('/search')
 def search():

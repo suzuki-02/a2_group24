@@ -63,34 +63,33 @@
   </div>
 
 
-  <!-- Category filters -->
+      <!-- Filters -->
+<div class="container px-3 mt-3">
+  <ul class="nav nav-pills gap-2" id="event-filters" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link {% if active_filter=='all' %}active{% endif %}"
+        href="{{ url_for('main.index', filter='all') }}"
+        role="tab"
+      >All</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link {% if active_filter=='today' %}active{% endif %}"
+        href="{{ url_for('main.index', filter='today') }}"
+        role="tab"
+      >Today</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link {% if active_filter=='weekend' %}active{% endif %}"
+        href="{{ url_for('main.index', filter='weekend') }}"
+        role="tab"
+      >This Weekend</a>
+    </li>
+  </ul>
+</div>
 
-  <div class="px-1 d-flex mt-3">
-    <ul class="nav nav-underline" id="myTab" role="tablist">
-
-      <!-- All events -->
-
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
-          role="tab" aria-controls="home-tab-pane" aria-selected="true">All</button>
-      </li>
-
-      <!-- Today -->
-
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
-          role="tab" aria-controls="profile-tab-pane" aria-selected="false">Today</button>
-      </li>
-
-      <!-- This weekend -->
-
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button"
-          role="tab" aria-controls="contact-tab-pane" aria-selected="false">This
-          Weekend</button>
-      </li>
-    </ul>
-  </div>
   <div class="row">
     <!-- Event 1 (dynamic from DB) -->
     <div class="col-12 col-md-6 col-lg-3 p-3">
@@ -100,7 +99,11 @@
         <!-- Event image -->
         <a href="{{ url_for('event.show', id=event.id) }}" class="stretched-link">
           <div class="ratio ratio-16x9">
-            <img src="{{ event.image }}" class="card-img-top object-fit-cover" alt="{{ event.title }}">
+            <img src="{{ event.image and url_for('static', filename=event.image) or 'https://placehold.co/600x400?text=Event+Image' }}"
+     class="card-img-top object-fit-cover"
+   alt="{{ event.title }}"
+>
+
           </div>
         </a>
 
@@ -124,76 +127,43 @@
       {% endif %}
     </div>
 
-    <!-- Event 2 (placeholder) -->
+   {% if events and events|length %}
+  {% for ev in events %}
     <div class="col-12 col-md-6 col-lg-3 p-3">
       <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
-        <a href="{{ url_for('event.show', id=event.id) }}" class="stretched-link">
+        <a href="{{ url_for('event.show', id=ev.id) }}" class="stretched-link">
           <div class="ratio ratio-16x9">
-            <img src="https://placehold.co/600x400?text=Event+Image" class="card-img-top object-fit-cover"
-              alt="Event placeholder">
+            {% set img = ev.image %}
+            <img
+              src="{{ img if img and img.startswith('/static/') else url_for('static', filename=img or 'image/default.jpg') }}"
+              class="card-img-top object-fit-cover"
+              alt="{{ ev.title }}">
           </div>
         </a>
         <div class="card-body">
-          <h5 class="card-title fw-bold mb-1">Ed Sheeran</h5>
-          <p class="text-muted mb-1">Suncorp Stadium</p>
-          <p class="mb-2">Sat, Oct 25 • 7:30 PM</p>
+          <h5 class="card-title fw-bold mb-1">{{ ev.title }}</h5>
+          <p class="text-muted mb-1">{{ ev.venue or 'Venue TBA' }}</p>
+          <p class="mb-2">
+            {% if ev.date %}{{ ev.date }}{% else %}Date to be announced{% endif %}
+          </p>
           <div class="d-flex justify-content-between align-items-center">
-            <p class="fw-semibold text-primary mb-0">$169.00</p>
-            <span class="badge rounded-pill bg-warning">
-              <i class="fa-solid fa-triangle-exclamation"></i> Selling Fast
+            <p class="fw-semibold text-primary mb-0">
+              {{ ev.price is not none and ('$%.2f'|format(ev.price)) or 'Free' }}
+            </p>
+            <span class="badge rounded-pill bg-success">
+              <i class="fa-solid fa-ticket"></i> On Sale
             </span>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Event 3 (placeholder) -->
-    <div class="col-12 col-md-6 col-lg-3 p-3">
-      <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
-        <a href="{{ url_for('event.show', id=event.id) }}" class="stretched-link">
-          <div class="ratio ratio-16x9">
-            <img src="https://placehold.co/600x400?text=Event+Image" class="card-img-top object-fit-cover"
-              alt="Event placeholder">
-          </div>
-        </a>
-        <div class="card-body">
-          <h5 class="card-title fw-bold mb-1">Post Malone</h5>
-          <p class="text-muted mb-1">Brisbane Entertainment Centre</p>
-          <p class="mb-2">Thu, Nov 6 • 8:00 PM</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <p class="fw-semibold text-primary mb-0">$139.00</p>
-            <span class="badge rounded-pill bg-danger">
-              <i class="fa-solid fa-ban"></i> Sold Out
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Event 4 (placeholder) -->
-    <div class="col-12 col-md-6 col-lg-3 p-3">
-      <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
-        <a href="{{ url_for('event.show', id=event.id) }}" class="stretched-link">
-          <div class="ratio ratio-16x9">
-            <img src="https://placehold.co/600x400?text=Event+Image" class="card-img-top object-fit-cover"
-              alt="Event placeholder">
-          </div>
-        </a>
-        <div class="card-body">
-          <h5 class="card-title fw-bold mb-1">Bad Bunny</h5>
-          <p class="text-muted mb-1">Riverstage Brisbane</p>
-          <p class="mb-2">Sat, Nov 22 • 7:00 PM</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <p class="fw-semibold text-primary mb-0">$119.00</p>
-            <span class="badge rounded-pill bg-danger">
-              <i class="fa-solid fa-xmark"></i> Cancelled
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+  {% endfor %}
+{% else %}
+  <div class="col-12">
+    <p class="text-muted">No events yet — <a href="{{ url_for('event.create') }}">create one</a>!</p>
   </div>
-</div>
+{% endif %}
+
 
 <!-- Load more events button -->
 
