@@ -44,7 +44,7 @@ class EventForm(FlaskForm):
 
 # User comment
 class CommentForm(FlaskForm):
-    text = TextAreaField('Comment', [InputRequired()])
+    text = TextAreaField('Add your Comment', [InputRequired()])
     submit = SubmitField('Create')
 
 # Purchase form
@@ -54,3 +54,18 @@ class PurchaseForm(FlaskForm):
         NumberRange(min=1, message="You must purchase at least one ticket")
     ])
     submit = SubmitField('Purchase')
+
+# Update event
+class EventUpdateForm(FlaskForm):
+    title = StringField('Event Title', validators=[InputRequired()])
+    date = DateField('Event Date', format='%Y-%m-%d', validators=[InputRequired()])
+    price = DecimalField('Ticket Price ($)', places=2, validators=[
+        InputRequired(), NumberRange(min=0, message="Price must be positive")
+    ])
+    quantity = IntegerField('Ticket Quantity', validators=[
+        InputRequired(), NumberRange(min=0, message="Ticket quantity cannot be negative")
+    ])
+    description = TextAreaField('Description', validators=[InputRequired()])
+    image = FileField('Event Image', validators=[
+    FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')])
+    submit = SubmitField("Update")

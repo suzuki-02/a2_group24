@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from .models import Event, Comment, Order
 from flask_login import current_user, login_required
-from .forms import EventForm, CommentForm, PurchaseForm
+from .forms import EventForm, CommentForm, PurchaseForm, EventUpdateForm
 from . import db
 import os
 from werkzeug.utils import secure_filename
@@ -42,7 +42,7 @@ def check_upload_file(form):
   # get the current path of the module file… store image file relative to this path  
   BASE_PATH = os.path.dirname(__file__)
   # upload file location – directory of this file/static/image
-  upload_path = os.path.join(BASE_PATH,'static/image',secure_filename(filename))
+  upload_path = os.path.join(BASE_PATH, 'static', 'image', secure_filename(filename))
   # store relative path in DB as image location in HTML is relative
   db_upload_path = '/static/image/' + secure_filename(filename)
   # save the file and return the db upload path  
@@ -62,7 +62,12 @@ def comment(id):
       # and the link is created
       db.session.add(comment) 
       db.session.commit() 
+<<<<<<< HEAD
  
+=======
+
+      # flashing a message which needs to be handled by the html
+>>>>>>> 0303ac17aa487cd334720c5a28559ebbb3d9038c
       flash('Your comment has been added', 'success') 
     # using redirect sends a GET request to event.show
     return redirect(url_for('event.show', id=id))
@@ -114,3 +119,67 @@ def my_bookings():
     # get all orders by current user
     orders = current_user.orders  # because of the backref
     return render_template('events/books.html', orders=orders)
+
+@events_bp.route('/my_events')
+@login_required
+def my_events():
+    # Fetch all events created by this user
+    events = Event.query.filter_by(creator_id=current_user.id).order_by(Event.date.desc()).all()
+    return render_template('events/my_events.html', events=events)
+
+@events_bp.route('/<id>/update', methods=['GET', 'POST'])
+@login_required
+def update(id):
+    event = db.session.scalar(db.select(Event).where(Event.id==id))
+    if event is None:
+        flash("Event not found", "danger")
+        return redirect(url_for('main.index'))
+    # only the creator can update
+    if event.creator != current_user:
+        flash("You do not have permission to update this event", "danger")
+        return redirect(url_for('event.show', id=event.id))
+    # check if event is cancelled
+    if event.status == "Cancelled":
+      flash("This event has been cancelled and cannot be updated.", "warning")
+      return redirect(url_for('event.show', id=event.id))
+    
+    form = EventUpdateForm()
+    if form.validate_on_submit():
+        # call the function that checks and returns image
+        if form.image.data:
+            db_file_path = check_upload_file(form)
+            event.image = db_file_path
+        event.title = form.title.data
+        event.date = form.date.data
+        event.price = form.price.data
+        event.quantity = form.quantity.data
+        event.description = form.description.data
+        db.session.commit()
+        flash("Event updated successfully", "success")
+        return redirect(url_for('event.show', id=event.id))
+    elif request.method == 'GET':
+        form.title.data = event.title
+        form.date.data = event.date
+        form.price.data = event.price
+        form.quantity.data = event.quantity
+        form.description.data = event.description
+    return render_template('events/create.html', form=form, event=event)
+
+@events_bp.route('/<id>/cancel')
+@login_required
+def cancel(id):
+    event = db.session.scalar(db.select(Event).where(Event.id == id))
+    if event is None:
+        flash("Event not found", "danger")
+        return redirect(url_for('event.my_events'))
+
+    # only creator can cancel
+    if event.creator != current_user:
+        flash("You do not have permission to cancel this event", "danger")
+        return redirect(url_for('event.show', id=event.id))
+
+    event.cancel()  # sets status = "Cancelled"
+    db.session.commit()
+
+    flash("Event has been cancelled successfully.", "warning")
+    return redirect(url_for('event.my_events'))

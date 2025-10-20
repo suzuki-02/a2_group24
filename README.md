@@ -1,4 +1,4 @@
-# Event Management Progress Update
+# Progress Update
 
 ## Current Routes
 - **User Authentication**
@@ -12,6 +12,9 @@
   - `/events/{id}/comment` → Post a new comment for a specific event
   - `/events/<id>/purchase` → Purchase tickets for an event
   - `/events/books` → Displays the logged-in user’s booking history
+  - `/events/my_events` → Displays all events created by the logged-in user with **Update** and **Cancel** options
+  - `/events/<id>/update` → Update event details (only accessible by the event creator)
+  - `/events/<id>/cancel` → Cancel an event (only accessible by the event creator; action cannot be undone)
 
 ---
 
