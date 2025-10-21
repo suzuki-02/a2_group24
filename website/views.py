@@ -87,7 +87,6 @@ def filter_events():
             .all()
         )
 
-    # 👇 Only render the event cards section, not the full page
     return render_template('_event_cards.html', events=events)
 
 @main_bp.route('/search')

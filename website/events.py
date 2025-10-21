@@ -62,12 +62,7 @@ def comment(id):
       # and the link is created
       db.session.add(comment) 
       db.session.commit() 
-<<<<<<< HEAD
  
-=======
-
-      # flashing a message which needs to be handled by the html
->>>>>>> 0303ac17aa487cd334720c5a28559ebbb3d9038c
       flash('Your comment has been added', 'success') 
     # using redirect sends a GET request to event.show
     return redirect(url_for('event.show', id=id))
