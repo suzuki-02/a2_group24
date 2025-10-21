@@ -18,22 +18,28 @@ def show(id):
 @events_bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
-  print('Method type: ', request.method)
-  form = EventForm()
-  if form.validate_on_submit():
-    db_file_path = check_upload_file(form)
-    event = Event(
-    title=form.title.data,
-    date=form.date.data,
-    price=form.price.data,
-    quantity=form.quantity.data,
-    description=form.description.data, 
-    image = db_file_path,
-    creator=current_user)
-    db.session.add(event)
-    db.session.commit()
-    return redirect(url_for('event.show', id=event.id))
-  return render_template('events/create.html', form=form)
+    print('Method type: ', request.method)
+    form = EventForm()
+
+    if form.validate_on_submit():
+        db_file_path = check_upload_file(form)
+        event = Event(
+            title=form.title.data,
+            date=form.date.data,
+            price=form.price.data,
+            quantity=form.quantity.data,
+            description=form.description.data,
+            image=db_file_path,
+            featuredevent=form.featuredevent.data,  # ✅ add this line
+            creator=current_user
+        )
+
+        db.session.add(event)
+        db.session.commit()
+        return redirect(url_for('event.show', id=event.id))
+
+    return render_template('events/create.html', form=form)
+
 
 def check_upload_file(form):
   # get file data from form  

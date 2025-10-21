@@ -47,8 +47,25 @@ def index():
             .all()
         )
 
+    # --- FEATURED EVENTS ---
+    featured_events = (
+        Event.query
+        .filter_by(featuredevent=True)
+        .filter(Event.date != None)
+        .order_by(db.func.julianday(Event.date).asc())
+        .limit(5)  # optional: limit how many slides appear
+        .all()
+    )
+
     print(f"DEBUG: {len(events)} events found for filter '{filter_type}'")
-    return render_template('index.html', events=events, active_filter=filter_type)
+    print(f"DEBUG: {len(featured_events)} featured events found")
+
+    return render_template(
+        'index.html',
+        events=events,
+        featured_events=featured_events,
+        active_filter=filter_type
+    )
 
 @main_bp.route('/events/filter')
 def filter_events():

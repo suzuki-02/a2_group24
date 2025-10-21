@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField, DateField, DecimalField, IntegerField
+from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField, DateField, DecimalField, IntegerField, BooleanField
 from wtforms.validators import InputRequired, Email, EqualTo, NumberRange
 from flask_wtf.file import FileRequired, FileField, FileAllowed, ValidationError
 
@@ -37,6 +37,7 @@ class EventForm(FlaskForm):
         InputRequired(), NumberRange(min=1, message="At least 1 ticket required")
     ])
     description = TextAreaField('Description', validators=[InputRequired()])
+    featuredevent = BooleanField('Make this a featured event')
     image = FileField('Event Image', validators=[
     FileRequired(message = 'Image cannot be empty'),
     FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')])

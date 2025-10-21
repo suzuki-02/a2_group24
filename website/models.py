@@ -31,6 +31,7 @@ class Event(db.Model):
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.String(200))
     image = db.Column(db.String(400))
+    featuredevent = db.Column(db.Boolean, default=False)
 
     # Event state (Open, Inactive, Sold Out, Cancelled)
     status = db.Column(db.String(20), nullable=False, default="Open")

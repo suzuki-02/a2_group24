@@ -82,29 +82,6 @@
             </div>
         </nav>
 
-
-        <!-- The code below is for debugging routes. You can remove it -->
-        <!-- {% if current_user.is_authenticated %}
-        <h2>Hello, {{ current_user.first_name }}!</h2>
-        <a href="{{ url_for('auth.logout') }}">Logout</a>
-        {% else %}
-        <h2>Hello, Guest!</h2>
-        <p><strong>Test Login</strong></p>
-        <p>Email: <code>john@example.com</code></p>
-        <p>Password: <code>pass</code></p>
-        <a href="{{ url_for('auth.login') }}">Login</a>
-        {% endif %}
-        <a href="{{ url_for('auth.register') }}">Register</a>
-        <a href="{{ url_for('main.index') }}">Home</a>
-        <a href="/events/1">Event-1</a>
-        <a href="/events/create">Create an event</a> -->
-        <!-- End debug section -->
-
-        <!-- Navbar -->
-        <nav>
-            <!-- Your navbar should go here -->
-        </nav>
-
     <!-- flashes any messages to the user -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %} <!-- check if there are any messages -->

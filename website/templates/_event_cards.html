@@ -1,32 +1,44 @@
 <div class="row justify-content-center g-4">
   {% if events %}
-    {% for event in events %}
-      <div class="col-12 col-md-6 col-lg-3">
-        <div class="card border-0 shadow-sm rounded-3 overflow-hidden h-100">
-          <a href="{{ url_for('event.show', id=event.id) }}" class="stretched-link">
-            <div class="ratio ratio-16x9">
-              <img src="{{ event.image }}" class="card-img-top object-fit-cover" alt="{{ event.title }}">
-            </div>
-          </a>
-          <div class="card-body">
-            <h5 class="card-title fw-bold mb-1">{{ event.title }}</h5>
-            <p class="text-muted mb-1">{{ event.venue or 'Venue TBA' }}</p>
-            <p class="mb-2">
-              {{ event.date.strftime('%d %b %Y') if event.date else 'Date to be announced' }}
-            </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <p class="fw-semibold text-primary mb-0">
-                {{ "$%.2f"|format(event.price) if event.price else "Free" }}
-              </p>
-              <span class="badge rounded-pill bg-success">
-                <i class="fa-solid fa-ticket"></i> On Sale
+  {% for event in events %}
+  <div class="col-12 col-md-6 col-lg-3">
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden h-100">
+      <a href="{{ url_for('event.show', id=event.id) }}" class="stretched-link">
+        <div class="ratio ratio-16x9">
+          <img src="{{ event.image }}" class="card-img-top object-fit-cover" alt="{{ event.title }}">
+        </div>
+      </a>
+      <div class="card-body">
+        <h5 class="card-title fw-bold mb-1">{{ event.title }}</h5>
+        <p class="text-muted mb-1">{{ event.venue or 'Venue TBA' }}</p>
+        <p class="mb-2">
+          {{ event.date.strftime('%d %b %Y') if event.date else 'Date to be announced' }}
+        </p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="fw-semibold text-primary mb-0">
+            {{ "$%.2f"|format(event.price) if event.price else "Free" }}
+          </p>
+          <!-- Date and Status -->
+          <p class="text-light mb-2">
+            <small>
+              <i class="bi bi-calendar-event"></i>
+              {{ event.date.strftime('%A, %d %B %Y') if event.date else '' }}
+              &nbsp;|&nbsp;
+              <span class="badge 
+                {% if event.status == 'Cancelled' %}bg-danger
+                {% elif event.status == 'Sold Out' %}bg-warning text-dark
+                {% elif event.status == 'Active' %}bg-success
+                {% else %}bg-secondary{% endif %}">
+                {{ event.status or 'Status Unknown' }}
               </span>
-            </div>
-          </div>
+            </small>
+          </p>
         </div>
       </div>
-    {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
   {% else %}
-    <p class="text-muted text-center mt-4">No upcoming events found.</p>
+  <p class="text-muted text-center mt-4">No upcoming events found.</p>
   {% endif %}
 </div>
