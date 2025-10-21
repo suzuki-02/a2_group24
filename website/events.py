@@ -62,7 +62,6 @@ def comment(id):
       # and the link is created
       db.session.add(comment) 
       db.session.commit() 
- 
       flash('Your comment has been added', 'success') 
     # using redirect sends a GET request to event.show
     return redirect(url_for('event.show', id=id))

@@ -1,88 +1,58 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IAB207 Assignment 2</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<<<<<<< HEAD
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- <link rel="stylesheet" href="../static/style/styles.css"> Not working in some routes -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
-=======
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="../static/style/styles.css" >
+<html>
 
-  <!-- Only resize specific navbar buttons (keeps everything else the same) -->
-  <style>
-    /* If your paths differ, adjust the href selectors accordingly */
-    .navbar a.btn[href*="/events/create"],
-    .navbar a.btn[href*="/events/books"] {
-      display: inline-flex;
-      align-items: center;
-      height: 42px;                 /* match your other button/link height */
-      padding-top: 0 !important;
-      padding-bottom: 0 !important;
-      padding-left: 12px !important;
-      padding-right: 12px !important;
-      line-height: 1.25;
-      box-sizing: border-box;
-      white-space: nowrap;          /* prevent wrap if icon + text */
-    }
-  </style>
->>>>>>> Haris-first-branch
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IAB207 Assignment 2</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../static/style/styles.css">
 </head>
 
-<body class="d-flex flex-column min-vh-100">
-  <!-- Main content grows to fill space, pushing footer to bottom -->
-  <main class="flex-grow-1">
+<body>
     <!-- Header -->
     <header>
-<<<<<<< HEAD
-=======
-      <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-        <div class="container">
-          <a class="navbar-brand fw-bold" href="{{ url_for('main.index') }}" target="_top">
-            <i class="fa-solid fa-ticket"></i> EventFinder
-          </a>
->>>>>>> Haris-first-branch
+        <!-- Header -->
 
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+            <div class="container">
 
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Single search field (no location) -->
-            <form class="d-flex my-2 my-lg-0 w-100" role="search">
-              <div class="input-group">
-                <span class="input-group-text" aria-hidden="true">
-                  <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" class="form-control" placeholder="Search Events" aria-label="Search events">
-                <button class="btn btn-primary" type="submit" disabled aria-label="Search">
-                  <i class="fa-solid fa-magnifying-glass"></i>
+                <!-- Brand -->
+
+                <a class="navbar-brand fw-bold" href="{{ url_for('main.index') }}" target="_top">
+                    <i class="fa-solid fa-ticket"></i> EventFinder
+                </a>
+
+                <!-- Hamburger -->
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-              </div>
-            </form>
 
-<<<<<<< HEAD
                 <!-- Collapsible content -->
 
                 <div class="collapse navbar-collapse" id="navbarNav">
 
                     <!-- Search bar -->
 
-                    <form class="d-flex my-2 my-lg-0 w-100" action="{{ url_for('main.search') }}">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-                            <input type="text" name="search" class="form-control" id="SearchForm">
-                            <button class="btn btn-primary" type="submit">
-                                Search
-                            </button>
-                        </div>
-                    </form>
+                    <form class="d-flex my-2 my-lg-0 w-100" role="search"
+      method="get" action="{{ url_for('main.search') }}">
+  <div class="input-group">
+    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+    <input name="q" type="text" class="form-control" placeholder="Search Events">
+
+    <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
+    <input name="loc" type="text" class="form-control" placeholder="Location">
+
+    <button class="btn btn-primary" type="submit">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </div>
+</form>
+
+
 
                     <!-- Nav buttons -->
 
@@ -161,109 +131,87 @@
     <!-- End flash message code -->
     
         {% block header %}
-=======
-            <!-- Nav buttons -->
-            <ul class="navbar-nav ms-auto mt-2 mt-lg-0 gap-2 ps-lg-2">
-              <li class="nav-item">
-                <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/books" target="_top">
-                  <i class="fa-solid fa-calendar-check me-1"></i> My Events
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/create" target="_top">
-                  <i class="fa-solid fa-calendar-plus me-1"></i> Create Event
-                </a>
-              </li>
-              {% if current_user.is_authenticated %}
-              <li class="nav-item">
-                <a class="btn btn-primary w-100" href="{{ url_for('auth.logout') }}">Logout</a>
-              </li>
-              {% else %}
-              <li class="nav-item">
-                <a class="btn btn-primary w-100" href="{{ url_for('auth.login') }}">Login</a>
-              </li>
-              <li class="nav-item">
-                <a class="btn btn-primary w-100" href="{{ url_for('auth.register') }}">Register</a>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-      </nav>
->>>>>>> Haris-first-branch
 
-      <div class="container-fluid">
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            {% for message in get_flashed_messages() %}
-              <div class="alert alert-warning">
-                <button type="button" class="close" data-dismiss="alert" aria-label="close">x</button>
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
-      </div>
+        {% endblock %}
 
-      {% block header %}{% endblock %}
     </header>
 
-    {% block content %}{% endblock %}
-  </main>
+    {% block content %}
 
-  <!-- Footer -->
-  <footer class="bg-dark text-light pt-5 pb-4">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 col-md-3 mb-4">
-          <h5 class="mb-3">
-            <a class="navbar-brand fw-bold" href="{{ url_for('main.index') }}" target="_top">
-              <i class="fa-solid fa-ticket"></i> EventFinder
-            </a>
-          </h5>
-          <p class="small">Your one-stop platform for discovering and booking events.</p>
+    {% endblock %}
+
+    <!-- Footer -->
+
+    <footer class="bg-dark text-light pt-5 pb-4">
+        <div class="container">
+            <div class="row">
+
+                <!-- Logo and slogan -->
+
+                <div class="col-12 col-md-3 mb-4">
+                    <h5 class="mb-3"><a class="navbar-brand fw-bold" href="index.html" target="_top"><i
+                                class="fa-solid fa-ticket"></i>
+                            EventFinder</a></h5>
+                    <p class="small">Your one-stop platform for discovering and booking events.</p>
+                </div>
+
+                <!-- Quick links -->
+
+                <div class="col-6 col-md-2 mb-4">
+                    <h6 class="text-uppercase">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="bookinghistory.html" class="text-light text-decoration-none">My Events</a></li>
+                        <li><a href="eventmgmt.html" class="text-light text-decoration-none">Create Event</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Login</a></li>
+                        <li><a href="signup.html" class="text-light text-decoration-none">Sign Up</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+
+                <div class="col-6 col-md-2 mb-4">
+                    <h6 class="text-uppercase">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">FAQ</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Contact Us</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Terms & Conditions</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social links -->
+
+                <div class="col-12 col-md-3 mb-4">
+                    <h6 class="text-uppercase">Follow Us</h6>
+                    <div class="d-flex gap-2">
+                        <a href="https://www.facebook.com/" target="_blank" class="text-light fs-5"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/" target="_blank" class="text-light fs-5"><i
+                                class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/" target="_blank" class="text-light fs-5"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/" target="_blank" class="text-light fs-5"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Separator -->
+
+            <hr class="bg-secondary">
+
+            <!-- Copyright -->
+
+            <div class="d-flex justify-content-between align-items-center pt-3">
+                <p class="mb-0 small">&copy; 2025 EventFinder. All rights reserved.</p>
+            </div>
         </div>
+    </footer>
 
-        <div class="col-6 col-md-2 mb-4">
-          <h6 class="text-uppercase">Quick Links</h6>
-          <ul class="list-unstyled">
-            <li><a href="/events/books" class="text-light text-decoration-none">My Events</a></li>
-            <li><a href="/events/create" class="text-light text-decoration-none">Create Event</a></li>
-            <li><a href="{{ url_for('auth.login') }}" class="text-light text-decoration-none">Login</a></li>
-            <li><a href="{{ url_for('auth.register') }}" class="text-light text-decoration-none">Sign Up</a></li>
-          </ul>
-        </div>
-
-        <div class="col-6 col-md-2 mb-4">
-          <h6 class="text-uppercase">Support</h6>
-          <ul class="list-unstyled">
-            <li><a href="#" class="text-light text-decoration-none">FAQ</a></li>
-            <li><a href="#" class="text-light text-decoration-none">Contact Us</a></li>
-            <li><a href="#" class="text-light text-decoration-none">Terms & Conditions</a></li>
-            <li><a href="#" class="text-light text-decoration-none">Privacy Policy</a></li>
-          </ul>
-        </div>
-
-        <div class="col-12 col-md-3 mb-4">
-          <h6 class="text-uppercase">Follow Us</h6>
-          <div class="d-flex gap-2">
-            <a href="https://www.facebook.com/" target="_blank" class="text-light fs-5"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://x.com/" target="_blank" class="text-light fs-5"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.instagram.com/" target="_blank" class="text-light fs-5"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.linkedin.com/" target="_blank" class="text-light fs-5"><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <hr class="bg-secondary">
-
-      <div class="d-flex justify-content-between align-items-center pt-3">
-        <p class="mb-0 small">&copy; 2025 EventFinder. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-          crossorigin="anonymous"></script>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
+
 </html>

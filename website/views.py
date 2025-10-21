@@ -1,11 +1,8 @@
-<<<<<<< HEAD
 from flask import Blueprint, render_template, request, redirect, url_for
 from datetime import datetime, timedelta
-=======
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user
 from sqlalchemy import select
->>>>>>> Haris-first-branch
 from .models import Event
 from . import db
 
@@ -72,8 +69,6 @@ def delete_event(event_id):
     if event.user_id != current_user.id:
         flash("You cannot delete another user's event.", "danger")
         return redirect(url_for('main.dashboard'))
-
-<<<<<<< HEAD
     else:
         events = (
             Event.query
@@ -87,21 +82,20 @@ def delete_event(event_id):
 
 @main_bp.route('/search')
 def search():
-    if request.args['search'] and request.args['search'] != "":
-        print(request.args['search'])
-        query = "%" + request.args['search'] + "%"
-        events = db.session.scalars(db.select(Event).where(Event.description.like(query)))
-        return render_template('index.html', events=events)
-    else:
-        return redirect(url_for('main.index'))
-=======
-    db.session.delete(event)
-    db.session.commit()
-    flash('Event deleted successfully.', 'success')
-    return redirect(url_for('main.dashboard'))
+    q = (request.args.get('q') or '').strip()
+    loc = (request.args.get('loc') or '').strip()
+
+    stmt = db.select(Event)
+    if q:
+        stmt = stmt.where(Event.title.ilike(f'%{q}%') | Event.description.ilike(f'%{q}%'))
+    if loc and hasattr(Event, 'location'):
+        stmt = stmt.where(Event.location.ilike(f'%{loc}%'))
+
+    events = db.session.scalars(stmt).all()
+
+    return render_template('search_results.html', q=q, loc=loc, events=events)
 
 @main_bp.app_errorhandler(403)
 def forbidden(e):
     flash("You don't have permission to access that page.", "danger")
-    return redirect(url_for('main.index'))
->>>>>>> Haris-first-branch
+    return render_template('errors/403.html'), 403

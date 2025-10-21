@@ -96,10 +96,10 @@ class EventForm(FlaskForm):
     date = DateField('Event Date', format='%Y-%m-%d', validators=[InputRequired()])
 
     # Times (HTML5 time inputs)
-    start_time = TimeField('Start Time', format='%H:%M',
-                           validators=[InputRequired()], widget=TimeInput())
-    door_time  = TimeField('Door Time',  format='%H:%M',
-                           validators=[InputRequired()], widget=TimeInput())
+    # start_time = TimeField('Start Time', format='%H:%M',
+    #                     validators=[InputRequired()], widget=TimeInput())
+    # door_time  = TimeField('Door Time',  format='%H:%M',
+    #                     validators=[InputRequired()], widget=TimeInput())
 
     price = DecimalField('Ticket Price ($)', places=2, validators=[
         InputRequired(), NumberRange(min=0, message="Price must be positive")
@@ -134,7 +134,6 @@ class PurchaseForm(FlaskForm):
         NumberRange(min=1, message="You must purchase at least one ticket")
     ])
     submit = SubmitField('Purchase')
-<<<<<<< HEAD
 
 # Update event
 class EventUpdateForm(FlaskForm):
@@ -150,5 +149,4 @@ class EventUpdateForm(FlaskForm):
     image = FileField('Event Image', validators=[
     FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')])
     submit = SubmitField("Update")
-=======
->>>>>>> Haris-first-branch
+
