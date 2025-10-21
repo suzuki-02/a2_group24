@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from .models import Event, Comment, Order
 from flask_login import current_user, login_required
-from .forms import EventForm, CommentForm, PurchaseForm
+from .forms import EventForm, CommentForm, PurchaseForm, EventUpdateForm
 from . import db
 import os
 from werkzeug.utils import secure_filename
@@ -11,10 +11,8 @@ events_bp = Blueprint('event', __name__, url_prefix='/events')
 @events_bp.route('/<id>')
 def show(id):
     event = db.session.scalar(db.select(Event).where(Event.id==id))
-    # create the comment form
     cform = CommentForm()
-    # create the purchase form
-    oform = PurchaseForm() # (order form)
+    oform = PurchaseForm()
     return render_template('events/show.html', event=event, cform=cform, oform=oform)
 
 @events_bp.route('/create', methods=['GET', 'POST'])
@@ -23,7 +21,6 @@ def create():
   print('Method type: ', request.method)
   form = EventForm()
   if form.validate_on_submit():
-    # call the function that checks and returns image
     db_file_path = check_upload_file(form)
     event = Event(
     title=form.title.data,
@@ -33,11 +30,8 @@ def create():
     description=form.description.data, 
     image = db_file_path,
     creator=current_user)
-    # add the object to the db session
     db.session.add(event)
-    # commit to the database
     db.session.commit()
-    # Always end with redirect when form is valid
     return redirect(url_for('event.show', id=event.id))
   return render_template('events/create.html', form=form)
 
@@ -68,8 +62,6 @@ def comment(id):
       # and the link is created
       db.session.add(comment) 
       db.session.commit() 
-
-      # flashing a message which needs to be handled by the html
       flash('Your comment has been added', 'success') 
     # using redirect sends a GET request to event.show
     return redirect(url_for('event.show', id=id))
@@ -79,7 +71,6 @@ def comment(id):
 def purchase(id):
     form = PurchaseForm()
 
-    # get the event object associated to the page and the comment
     event = db.session.scalar(db.select(Event).where(Event.id==id))
     if form.validate_on_submit():  
 
@@ -146,7 +137,7 @@ def update(id):
       flash("This event has been cancelled and cannot be updated.", "warning")
       return redirect(url_for('event.show', id=event.id))
     
-    form = EventForm()
+    form = EventUpdateForm()
     if form.validate_on_submit():
         # call the function that checks and returns image
         if form.image.data:

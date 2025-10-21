@@ -1,0 +1,40 @@
+<div class="col-12 col-md-6 col-lg-3">
+  <div class="card border-0 shadow-sm rounded-3 overflow-hidden h-100">
+    <!-- Event Image -->
+    <a href="{{ url_for('event.show', id=event.id) }}">
+    <img
+      src="{{ event.image }}"
+      class="card-img-top"
+      alt="{{ event.title }}"
+      style="height: 200px; object-fit: cover"
+    /></a>
+
+    <!-- Inactive Badge -->
+    {% if event.status == 'Open' %}
+    <span class="badge bg-success position-absolute top-0 end-0 m-2">
+      Open
+    </span>
+    {% elif event.status == 'Cancelled' %}
+    <span class="badge bg-secondary position-absolute top-0 end-0 m-2">
+      Cancelled
+    </span>
+    {% elif event.status == 'Sold Out' %}
+    <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+      Sold Out
+    </span>
+    {% endif %}
+
+    <!-- Card Body -->
+    <div class="card-body">
+      <h5 class="card-title">{{ event.title }}</h5>
+      {% block card_content %}
+      <!-- Placeholder for child templates to fill -->
+      {% endblock %}
+    </div>
+
+    <!-- Optional Footer (for buttons) -->
+    {% block card_footer %}
+    <!-- Placeholder for buttons or actions -->
+    {% endblock %}
+  </div>
+</div>

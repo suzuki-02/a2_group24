@@ -6,32 +6,50 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 
 def create_app():
-   app = Flask(__name__)
-   app.debug = True
-   app.secret_key = 'somesecretkey'
-   app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
+    app = Flask(__name__)
+    app.debug = True
+    app.secret_key = 'somesecretkey'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
 
-   db.init_app(app)
-   Bootstrap5(app)
+    db.init_app(app)
+    Bootstrap5(app)
 
-   # initialise the login manager
-   login_manager = LoginManager()
-   login_manager.login_view = 'auth.login'
-   login_manager.init_app(app)
-   
-   # create a user loader function takes userid and returns User
-   from .models import User  # importing here to avoid circular references
-   @login_manager.user_loader
-   def load_user(user_id):
-      return db.session.scalar(db.select(User).where(User.id == user_id))
+    # initialise the login manager
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
 
-   from . import views
-   app.register_blueprint(views.main_bp)
+# create a user loader function takes userid and returns User
+    from .models import User  # importing here to avoid circular references
+    @login_manager.user_loader
+    def load_user(user_id):
+        return db.session.scalar(db.select(User).where(User.id == user_id))
 
-   from . import auth
-   app.register_blueprint(auth.auth_bp)
+    from . import views
+    app.register_blueprint(views.main_bp)
 
-   from . import events
-   app.register_blueprint(events.events_bp)
+    from . import auth
+    app.register_blueprint(auth.auth_bp)
 
-   return app
+    from . import events
+    app.register_blueprint(events.events_bp)
+
+    return app
+
+    # def register_error_handlers(app):
+    # @app.errorhandler(404)
+    # def not_found(e):
+    #     # lightweight log for missing routes
+    #     app.logger.info("404 at %s", request.path)
+    #     return render_template("errors/404.html"), 404
+
+    # @app.errorhandler(500)
+    # def server_error(e):
+    #     # ensure any failed transaction is rolled back
+    #     try:
+    #         db.session.rollback()
+    #     except Exception:
+    #         pass
+    #     # full stacktrace in logs
+    #     app.logger.exception("500 error at %s", request.path)
+    #     return render_template("errors/500.html"), 500

@@ -18,3 +18,6 @@ website/static/image/
 *.png
 *.jpg
 *.jpeg
+
+# Zone Identifier files
+*:Zone.Identifier

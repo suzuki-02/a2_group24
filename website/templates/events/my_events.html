@@ -1,40 +1,18 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
+
 <div class="container mt-5">
-  <h2>My Events</h2>
+  <h2 class="mb-4">{{ current_user.first_name }}'s Events</h2>
 
   {% if events %}
-  <table class="table table-striped mt-3">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Date</th>
-        <th>Status</th>
-        <th>Tickets</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for event in events %}
-      <tr>
-        <td>{{ event.title }}</td>
-        <td>{{ event.date.strftime('%Y-%m-%d') }}</td>
-        <td>{{ event.status }}</td>
-        <td>{{ event.quantity }}</td>
-        <td>
-          <a href="{{ url_for('event.show', id=event.id) }}" class="btn btn-sm btn-outline-primary">View</a>
-          {% if event.status != 'Cancelled' %}
-          <a href="{{ url_for('event.update', id=event.id) }}" class="btn btn-sm btn-outline-warning">Update</a>
-          <a href="{{ url_for('event.cancel', id=event.id) }}" class="btn btn-sm btn-outline-danger"
-            onclick="return confirm('Are you sure you want to cancel this event?\n\n⚠️ Once cancelled, it cannot be edited or reopen.');">Cancel</a>
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div
+    class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 gx-3 gy-3 mb-4"
+  >
+    {% for event in events %} {% include "components/event_card_creator.html" %}
+    {% endfor %}
+  </div>
   {% else %}
   <p class="text-muted">You haven’t created any events yet.</p>
   {% endif %}
 </div>
+
 {% endblock %}
