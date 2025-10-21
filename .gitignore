@@ -20,4 +20,4 @@ website/static/image/
 *.jpeg
 
 # Zone Identifier files
-*.Zone.Identifier
+*:Zone.Identifier
