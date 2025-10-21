@@ -6,8 +6,26 @@
   <title>IAB207 Assignment 2</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../static/style/styles.css" >
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../static/style/styles.css" >
+
+  <!-- Only resize specific navbar buttons (keeps everything else the same) -->
+  <style>
+    /* If your paths differ, adjust the href selectors accordingly */
+    .navbar a.btn[href*="/events/create"],
+    .navbar a.btn[href*="/events/books"] {
+      display: inline-flex;
+      align-items: center;
+      height: 42px;                 /* match your other button/link height */
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+      line-height: 1.25;
+      box-sizing: border-box;
+      white-space: nowrap;          /* prevent wrap if icon + text */
+    }
+  </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -40,36 +58,34 @@
               </div>
             </form>
 
-                    <!-- Nav buttons -->
-
-                    <ul class="navbar-nav ms-auto mt-2 mt-lg-0 gap-2 ps-lg-2">
-                        <li class="nav-item">
-                            <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/books"
-                                target="_top">
-                                <i class="fa-solid fa-calendar-check me-1"></i> My Events
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/create" target="_top">
-                                <i class="fa-solid fa-calendar-plus me-1"></i> Create Event
-                            </a>
-                        </li>
-                        {% if current_user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="btn btn-primary w-100" href="{{ url_for('auth.logout') }}">Logout</a>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="btn btn-primary w-100" href="{{ url_for('auth.login') }}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-primary w-100" href="{{ url_for('auth.register') }}">Register</a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
+            <!-- Nav buttons -->
+            <ul class="navbar-nav ms-auto mt-2 mt-lg-0 gap-2 ps-lg-2">
+              <li class="nav-item">
+                <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/books" target="_top">
+                  <i class="fa-solid fa-calendar-check me-1"></i> My Events
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/create" target="_top">
+                  <i class="fa-solid fa-calendar-plus me-1"></i> Create Event
+                </a>
+              </li>
+              {% if current_user.is_authenticated %}
+              <li class="nav-item">
+                <a class="btn btn-primary w-100" href="{{ url_for('auth.logout') }}">Logout</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="btn btn-primary w-100" href="{{ url_for('auth.login') }}">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="btn btn-primary w-100" href="{{ url_for('auth.register') }}">Register</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
 
       <div class="container-fluid">
         {% with messages = get_flashed_messages() %}
@@ -136,14 +152,13 @@
 
       <hr class="bg-secondary">
 
-            <div class="d-flex justify-content-between align-items-center pt-3">
-                <p class="mb-0 small">&copy; 2025 EventFinder. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+      <div class="d-flex justify-content-between align-items-center pt-3">
+        <p class="mb-0 small">&copy; 2025 EventFinder. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+          crossorigin="anonymous"></script>
 </body>
-
 </html>

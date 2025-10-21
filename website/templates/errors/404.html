@@ -1,7 +1,40 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% block title %}404 | Page Not Found — EventFinder{% endblock %}
+
 {% block content %}
-<div class="container py-5 text-center">
-  <p class="lead text-muted mb-4">We couldn’t find that page.</p>
-  <a class="btn btn-primary" href="{{ url_for('main.index') }}">Go home</a>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 text-center">
+      <h1 class="display-5 fw-bold mb-3">Page not found</h1>
+      <p class="lead text-muted mb-4">
+        Sorry, we couldn’t find that page. The link may be broken or it might have moved.
+      </p>
+
+      <div class="d-flex flex-wrap gap-2 justify-content-center">
+        <a class="btn btn-primary" href="{{ url_for('main.index') }}">
+          <i class="fa-solid fa-house me-1"></i> Home
+        </a>
+        <a class="btn btn-outline-secondary" href="/events/books">
+          <i class="fa-solid fa-calendar-check me-1"></i> My Events
+        </a>
+        <a class="btn btn-outline-secondary" href="/events/create">
+          <i class="fa-solid fa-calendar-plus me-1"></i> Create Event
+        </a>
+
+        {% if current_user.is_authenticated %}
+          <a class="btn btn-outline-secondary" href="{{ url_for('auth.logout') }}">
+            <i class="fa-solid fa-right-from-bracket me-1"></i> Logout
+          </a>
+        {% else %}
+          <a class="btn btn-outline-secondary" href="{{ url_for('auth.login') }}">
+            <i class="fa-solid fa-right-to-bracket me-1"></i> Login
+          </a>
+          <a class="btn btn-outline-secondary" href="{{ url_for('auth.register') }}">
+            <i class="fa-solid fa-user-plus me-1"></i> Sign Up
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
