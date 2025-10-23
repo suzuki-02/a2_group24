@@ -18,6 +18,9 @@
   - `/events/<id>/update` → Update event details (only accessible by the event creator)
   - `/events/<id>/cancel` → Cancel an event (only accessible by the event creator; action cannot be undone)
 
+- **Error Handler**
+  - `/xxx` -> Lands in error page
+
 ---
 
 ## Python Anywhere Link

@@ -149,7 +149,7 @@ a:hover{ color:#93c5fd; }
 /* ---------------------------
    Forms & Inputs
 ---------------------------- */
-/* .form-control{
+nav .form-control{
   background:#0f141a;
   color:var(--text);
   border:1px solid var(--border);
