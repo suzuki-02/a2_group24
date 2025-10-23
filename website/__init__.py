@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -19,7 +19,7 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
-# create a user loader function takes userid and returns User
+    # create a user loader function takes userid and returns User
     from .models import User  # importing here to avoid circular references
     @login_manager.user_loader
     def load_user(user_id):
@@ -34,22 +34,21 @@ def create_app():
     from . import events
     app.register_blueprint(events.events_bp)
 
+    @app.errorhandler(404)
+    def not_found(e):
+        # lightweight log for missing routes
+        app.logger.info("404 at %s", request.path)
+        return render_template("errors/404.html"), 404
+
+    @app.errorhandler(500)
+    def server_error(e):
+        # ensure any failed transaction is rolled back
+        try:
+            db.session.rollback()
+        except Exception:
+            pass
+        # full stacktrace in logs
+        app.logger.exception("500 error at %s", request.path)
+        return render_template("errors/500.html"), 500
+
     return app
-
-    # def register_error_handlers(app):
-    # @app.errorhandler(404)
-    # def not_found(e):
-    #     # lightweight log for missing routes
-    #     app.logger.info("404 at %s", request.path)
-    #     return render_template("errors/404.html"), 404
-
-    # @app.errorhandler(500)
-    # def server_error(e):
-    #     # ensure any failed transaction is rolled back
-    #     try:
-    #         db.session.rollback()
-    #     except Exception:
-    #         pass
-    #     # full stacktrace in logs
-    #     app.logger.exception("500 error at %s", request.path)
-    #     return render_template("errors/500.html"), 500
