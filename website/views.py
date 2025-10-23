@@ -1,3 +1,11 @@
+
+from sqlalchemy import or_
+from datetime import datetime, timedelta
+from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
+from flask_login import current_user, login_required
+from .forms import CommentForm
+from .models import Event, Comment
+
 from flask import Blueprint, render_template, request, redirect, url_for
 from datetime import datetime, timedelta
 from flask import Blueprint, render_template, redirect, url_for, request, flash
@@ -80,6 +88,36 @@ def delete_event(event_id):
 
     return render_template('_event_cards.html', events=events)
 
+
+# @main_bp.route('/search')
+# def search():
+#     # get inputs safely
+#     q   = (request.args.get('q') or '').strip()
+#     loc = (request.args.get('loc') or '').strip()
+
+#     # if nothing was typed, just go back to home (avoids None returns)
+#     if not q and not loc:
+#         return redirect(url_for('main.index'))
+
+#     # build query
+#     query = Event.query
+#     if q:
+#         like = f"%{q}%"
+#         query = query.filter(or_(Event.title.ilike(like),
+#                                  Event.description.ilike(like)))
+#     # only filter by location if your model has a 'location' column
+#     if loc and hasattr(Event, 'location'):
+#         query = query.filter(Event.location.ilike(f"%{loc}%"))
+
+#     events = query.order_by(Event.date.asc()).all()
+
+#     # ALWAYS return a template
+
+#     # Get one event (e.g., the most recent)
+#     event = db.session.scalar(db.select(Event).order_by(Event.id.desc()))
+#     return render_template('index.html', event=event)
+# in website/views.py (already done)
+
 @main_bp.route('/search')
 def search():
     q = (request.args.get('q') or '').strip()
@@ -99,3 +137,4 @@ def search():
 def forbidden(e):
     flash("You don't have permission to access that page.", "danger")
     return render_template('errors/403.html'), 403
+
