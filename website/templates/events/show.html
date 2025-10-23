@@ -20,8 +20,21 @@
       <hr />
 
       <h2>Details</h2>
+      <p><strong>Venue:</strong> {{ event.venue }}</p>
+      <p><strong>Genre:</strong> {{ event.genre }}</p>
       <p><strong>Date:</strong> {{ event.date }}</p>
-      <p><strong>Status:</strong> {{ event.status }}</p>
+      <p><strong>Door Time:</strong> {{ event.door_time }}</p>
+      <p><strong>Start Time:</strong> {{ event.start_time }}</p>
+      <p>
+        <strong>Status:</strong>
+        {% if event.status == 'Open' %}
+        <span class="badge bg-success">Open</span>
+        {% elif event.status == 'Cancelled' %}
+        <span class="badge bg-secondary">Cancelled</span>
+        {% elif event.status == 'Sold Out' %}
+        <span class="badge bg-danger">Sold Out</span>
+        {% endif %}
+      </p>
       <p>
         <strong>Created by:</strong> {{ event.creator.first_name }} {{
         event.creator.last_name }}
@@ -47,7 +60,9 @@
         <div class="col-md-12">
           <b
             >{{ comment.user }}
-            <span class="ml-2 text-muted">{{ comment.created_at.strftime("%b %d, %Y %I:%M %p") }}</span>
+            <span class="ml-2 text-muted"
+              >{{ comment.created_at.strftime("%b %d, %Y %I:%M %p") }}</span
+            >
           </b>
           <p>{{ comment.text }}</p>
         </div>

@@ -193,7 +193,6 @@ footer .navbar-brand{ color:#e9eef7!important; }
 ---------------------------- */
 .rounded-2xl{ border-radius:1rem; }
 .shadow-soft{ box-shadow:var(--shadow); }
-.badge{ border-radius:999px; }
 hr{ border-color:var(--border); }
 /* Make ALL placeholder text readable across the site */
 ::placeholder {
@@ -209,14 +208,13 @@ textarea.form-control::placeholder {
 
 
 :root {
-  /* --theme: #c0ffee; /
-  / --theme: #90ee90; /
-  / --theme: #fdfd96; /
-  / --theme: #6fa7d6; */
-  --theme: #1d1c1a;
+  --theme: #c0ffee;
+  /* --theme: #90ee90; */
+  /* --theme: #fdfd96; */
+  /* --theme: #6fa7d6; */
+  /* --theme: #1d1c1a; */
   --background-body: linear-gradient(to bottom right, #6fa7d6, #1d1c1a);
 }
-
 
 /* Cards /
 .card {

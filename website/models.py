@@ -26,7 +26,11 @@ class Event(db.Model):
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
+    genre = db.Column(db.String(50))
+    venue = db.Column(db.String(100))
     date = db.Column(db.Date, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    door_time = db.Column(db.Time, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.String(200))

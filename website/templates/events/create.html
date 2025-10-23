@@ -12,16 +12,48 @@
       <form method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
 
+        <!-- Title -->
         <div class="mb-3">
           {{ form.title.label(class="form-label") }} {{
           form.title(class="form-control", placeholder="Enter event title") }}
         </div>
 
+        <!-- Venue -->
+        <div class="mb-3">
+          {{ form.venue.label(class="form-label") }} {{
+          form.venue(class="form-control", placeholder="Enter event venue") }}
+        </div>
+
+        <!-- Genre -->
+        <div class="mb-3">
+          {{ form.genre.label(class="form-label") }} {{
+          form.genre(class="form-control", placeholder="Enter event genre") }}
+        </div>
+
+        <!-- Date -->
         <div class="mb-3">
           {{ form.date.label(class="form-label") }} {{
           form.date(class="form-control") }}
         </div>
 
+        <!-- Time -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            {{ form.start_time.label(class="form-label") }} {{
+            form.start_time(class="form-control") }}
+          </div>
+          <div class="col-md-6">
+            {{ form.door_time.label(class="form-label") }} {{
+            form.door_time(class="form-control") }} {% for err in
+            form.door_time.errors %}
+            <div class="text-danger small mt-1">
+              <i class="fa-solid fa-triangle-exclamation me-1"></i>{{ err }}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Quantity and Price -->
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             {{ form.quantity.label(class="form-label") }} {{
@@ -33,11 +65,13 @@
           </div>
         </div>
 
+        <!-- Description -->
         <div class="mb-3">
           {{ form.description.label(class="form-label") }} {{
           form.description(class="form-control", rows="3", placeholder="Describe your event here...") }}
         </div>
 
+        <!-- Image Upload -->
         <div class="mb-3">
           {{ form.image.label(class="form-label") }} {{
           form.image(class="form-control", accept="image/*") }}

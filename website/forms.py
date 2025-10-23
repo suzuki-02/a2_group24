@@ -94,12 +94,14 @@ class RegisterForm(FlaskForm):
 class EventForm(FlaskForm):
     title = StringField('Event Title', validators=[InputRequired()])
     date = DateField('Event Date', format='%Y-%m-%d', validators=[InputRequired()])
+    venue = StringField('Venue', validators=[InputRequired()])
+    genre = StringField('Genre', validators=[InputRequired()])
 
     # Times (HTML5 time inputs)
-    # start_time = TimeField('Start Time', format='%H:%M',
-    #                     validators=[InputRequired()], widget=TimeInput())
-    # door_time  = TimeField('Door Time',  format='%H:%M',
-    #                     validators=[InputRequired()], widget=TimeInput())
+    start_time = TimeField('Start Time', format='%H:%M',
+                        validators=[InputRequired()], widget=TimeInput())
+    door_time  = TimeField('Door Time',  format='%H:%M',
+                        validators=[InputRequired()], widget=TimeInput())
 
     price = DecimalField('Ticket Price ($)', places=2, validators=[
         InputRequired(), NumberRange(min=0, message="Price must be positive")

@@ -24,7 +24,11 @@ def create():
     db_file_path = check_upload_file(form)
     event = Event(
     title=form.title.data,
+    venue=form.venue.data,
+    genre=form.genre.data,
     date=form.date.data,
+    start_time=form.start_time.data,
+    door_time=form.door_time.data,
     price=form.price.data,
     quantity=form.quantity.data,
     description=form.description.data, 
@@ -33,6 +37,8 @@ def create():
     db.session.add(event)
     db.session.commit()
     return redirect(url_for('event.show', id=event.id))
+  # else:
+    # flash(form.errors, 'danger')
   return render_template('events/create.html', form=form)
 
 def check_upload_file(form):
