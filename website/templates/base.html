@@ -6,54 +6,79 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../static/style/styles.css">
+
+    <!-- Navbar tweaks: center buttons, limit search width, keep buttons side-by-side on desktop -->
+    <style>
+      /* 1) Keep nav items (incl. Login/Register) vertically centered */
+      .navbar .navbar-nav > .nav-item { display: flex; align-items: center; }
+      .navbar .btn { display: inline-flex; align-items: center; }
+
+      /* 2) Shorten search on desktop so buttons have room */
+      @media (min-width: 992px) {
+        .navbar form[role="search"] {
+          flex: 0 1 520px;   /* shrinkable, max ~520px */
+          max-width: 520px;
+          margin-left: 0.75rem;
+        }
+      }
+      /* Allow search to take full width on mobile */
+      @media (max-width: 991.98px) {
+        .navbar form[role="search"] {
+          width: 100%;
+          margin: .5rem 0;
+        }
+      }
+
+      /* 3) Prevent navbar buttons from stacking on one another on desktop */
+      @media (min-width: 992px) {
+        .navbar .navbar-nav.ms-3 { flex-wrap: nowrap; }
+      }
+
+      /* 4) Your original HTML uses w-100 on nav buttons; override inside navbar so they can sit inline */
+      .navbar .navbar-nav .btn.w-100 { width: auto !important; }
+
+      /* 5) Keep button labels on one line */
+      .btn-nowrap { white-space: nowrap; }
+    </style>
 </head>
 
 <body>
     <!-- Header -->
     <header>
-        <!-- Header -->
-
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
             <div class="container">
 
                 <!-- Brand -->
-
                 <a class="navbar-brand fw-bold" href="{{ url_for('main.index') }}" target="_top">
                     <i class="fa-solid fa-ticket"></i> EventFinder
                 </a>
 
                 <!-- Hamburger -->
-
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <!-- Collapsible content -->
-
                 <div class="collapse navbar-collapse" id="navbarNav">
 
                     <!-- Search bar -->
-
                     <form class="d-flex my-2 my-lg-0 w-100" role="search"
-                    method="get" action="{{ url_for('main.search') }}">
-                    <div class="input-group">
-    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-    <input name="q" type="text" class="form-control" placeholder="Search Events">
+                          method="get" action="{{ url_for('main.search') }}">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input name="q" type="text" class="form-control" placeholder="Search Events">
 
-    <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
-    <input name="loc" type="text" class="form-control" placeholder="Location">
+                            <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
+                            <input name="loc" type="text" class="form-control" placeholder="Location">
 
-    <button class="btn btn-primary" type="submit">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    </button>
-</div>
-</form>
-
-
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </form>
 
                     <!-- Nav buttons -->
-
                     <ul class="navbar-nav ms-auto mt-2 mt-lg-0 gap-2 ps-lg-2">
                         <li class="nav-item">
                             <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/books" target="_top">
@@ -72,14 +97,14 @@
                         </li>
                         {% if current_user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="btn btn-primary w-100" href="{{ url_for('auth.logout') }}">Logout</a>
+                            <a class="btn btn-primary w-100 btn-nowrap" href="{{ url_for('auth.logout') }}">Logout</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
-                            <a class="btn btn-primary w-100" href="{{ url_for('auth.login') }}">Login</a>
+                            <a class="btn btn-primary w-100 btn-nowrap" href="{{ url_for('auth.login') }}">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-primary w-100" href="{{ url_for('auth.register') }}">Register</a>
+                            <a class="btn btn-primary w-100 btn-nowrap" href="{{ url_for('auth.register') }}">Register</a>
                         </li>
                         {% endif %}
                     </ul>
@@ -87,90 +112,57 @@
             </div>
         </nav>
 
-
-        <!-- The code below is for debugging routes. You can remove it -->
-        <!-- {% if current_user.is_authenticated %}
-        <h2>Hello, {{ current_user.first_name }}!</h2>
-        <a href="{{ url_for('auth.logout') }}">Logout</a>
-        {% else %}
-        <h2>Hello, Guest!</h2>
-        <p><strong>Test Login</strong></p>
-        <p>Email: <code>john@example.com</code></p>
-        <p>Password: <code>pass</code></p>
-        <a href="{{ url_for('auth.login') }}">Login</a>
-        {% endif %}
-        <a href="{{ url_for('auth.register') }}">Register</a>
-        <a href="{{ url_for('main.index') }}">Home</a>
-        <a href="/events/1">Event-1</a>
-        <a href="/events/create">Create an event</a> -->
-        <!-- End debug section -->
-
-        <!-- Navbar -->
-        <nav>
-            <!-- Your navbar should go here -->
-        </nav>
-        
-
-    <!-- flashes any messages to the user -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %} <!-- check if there are any messages -->
+        <!-- flashes any messages to the user -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
         <div class="container mt-3">
             {% for category, message in messages %}
             {% if category == "message" %}
-            {% set category = "info" %} <!-- default to info -->
+            {% set category = "info" %}
             {% endif %}
             <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
-    <!-- End flash message code -->
-    
-        {% block header %}
+        {% endif %}
+        {% endwith %}
+        <!-- End flash message code -->
 
-        {% endblock %}
-
+        {% block header %}{% endblock %}
     </header>
 
-    {% block content %}
-
-    
-
-    {% endblock %}
+    {% block content %}{% endblock %}
 
     <!-- Footer -->
-
     <footer class="bg-dark text-light pt-5 pb-4">
         <div class="container">
             <div class="row">
 
                 <!-- Logo and slogan -->
-
                 <div class="col-12 col-md-3 mb-4">
-                    <h5 class="mb-3"><a class="navbar-brand fw-bold" href="index.html" target="_top"><i
-                                class="fa-solid fa-ticket"></i>
-                            EventFinder</a></h5>
+                    <h5 class="mb-3">
+                        <a class="navbar-brand fw-bold" href="index.html" target="_top">
+                            <i class="fa-solid fa-ticket"></i> EventFinder
+                        </a>
+                    </h5>
                     <p class="small">Your one-stop platform for discovering and booking events.</p>
                 </div>
 
                 <!-- Quick links -->
-
-            <div class="col-6 col-md-2 mb-4">
-    <h6 class="text-uppercase">Quick Links</h6>
-    <ul class="list-unstyled">
-    <li><a href="{{ url_for('main.index') }}" class="text-light text-decoration-none">Home</a></li>
-    <li><a href="{{ url_for('event.my_bookings') }}" class="text-light text-decoration-none">My Bookings</a></li>
-    <li><a href="{{ url_for('event.create') }}" class="text-light text-decoration-none">Create Event</a></li>
-    <li><a href="{{ url_for('auth.login') }}" class="text-light text-decoration-none">Login</a></li>
-    <li><a href="{{ url_for('auth.register') }}" class="text-light text-decoration-none">Sign Up</a></li>
-    </ul>
-</div>
+                <div class="col-6 col-md-2 mb-4">
+                    <h6 class="text-uppercase">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('main.index') }}" class="text-light text-decoration-none">Home</a></li>
+                        <li><a href="{{ url_for('event.my_bookings') }}" class="text-light text-decoration-none">My Bookings</a></li>
+                        <li><a href="{{ url_for('event.create') }}" class="text-light text-decoration-none">Create Event</a></li>
+                        <li><a href="{{ url_for('auth.login') }}" class="text-light text-decoration-none">Login</a></li>
+                        <li><a href="{{ url_for('auth.register') }}" class="text-light text-decoration-none">Sign Up</a></li>
+                    </ul>
+                </div>
 
                 <!-- Support -->
-
                 <div class="col-6 col-md-2 mb-4">
                     <h6 class="text-uppercase">Support</h6>
                     <ul class="list-unstyled">
@@ -182,27 +174,18 @@
                 </div>
 
                 <!-- Social links -->
-
                 <div class="col-12 col-md-3 mb-4">
                     <h6 class="text-uppercase">Follow Us</h6>
                     <div class="d-flex gap-2">
-                        <a href="https://www.facebook.com/" target="_blank" class="text-light fs-5"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a href="https://x.com/" target="_blank" class="text-light fs-5"><i
-                                class="fab fa-twitter"></i></a>
-                        <a href="https://www.instagram.com/" target="_blank" class="text-light fs-5"><i
-                                class="fab fa-instagram"></i></a>
-                        <a href="https://www.linkedin.com/" target="_blank" class="text-light fs-5"><i
-                                class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.facebook.com/" target="_blank" class="text-light fs-5"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/" target="_blank" class="text-light fs-5"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/" target="_blank" class="text-light fs-5"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/" target="_blank" class="text-light fs-5"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
             </div>
 
-            <!-- Separator -->
-
             <hr class="bg-secondary">
-
-            <!-- Copyright -->
 
             <div class="d-flex justify-content-between align-items-center pt-3">
                 <p class="mb-0 small">&copy; 2025 EventFinder. All rights reserved.</p>
@@ -213,8 +196,6 @@
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script>
-    
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </html>
