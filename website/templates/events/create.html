@@ -1,58 +1,93 @@
-{% extends 'base.html' %} {% from 'bootstrap5/form.html' import render_form %}
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
 {% block content %}
-<div class="evnet-form-container mt-3 mb-3">
-  <div class="row">
-    <div class="col-md-12">
-      {% if event %}
-      <h2>Update Your Event</h2>
-      {% else %}
-      <h2>Create Your Event</h2>
-      {% endif %}
 
-      <form method="POST" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
 
-        <div class="mb-3">
-          {{ form.title.label(class="form-label") }} {{
-          form.title(class="form-control", placeholder="Enter event title") }}
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+          {% if event %}
+            <h2 class="mb-4 text-center">Update Your Event</h2>
+          {% else %}
+            <h2 class="mb-4 text-center">Create Your Event</h2>
+          {% endif %}
+
+          <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            <!-- Event Title -->
+            <div class="mb-3">
+              {{ form.title.label(class="form-label") }}
+              {{ form.title(class="form-control", placeholder="Enter event title") }}
+            </div>
+
+            <!-- Date -->
+            <div class="mb-3">
+              {{ form.date.label(class="form-label") }}
+              {{ form.date(class="form-control") }}
+            </div>
+
+            <!-- Times -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                {{ form.start_time.label(class="form-label") }}
+                {{ form.start_time(class="form-control", type="time") }}
+              </div>
+              <div class="col-md-6">
+                {{ form.door_time.label(class="form-label") }}
+                {{ form.door_time(class="form-control", type="time") }}
+              </div>
+            </div>
+
+            <!-- Genre -->
+            <div class="mb-3">
+              {{ form.genre.label(class="form-label") }}
+              {{ form.genre(class="form-select") }}
+            </div>
+
+            <!-- Ticket Details -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                {{ form.quantity.label(class="form-label") }}
+                {{ form.quantity(class="form-control", placeholder="1") }}
+              </div>
+              <div class="col-md-6">
+                {{ form.price.label(class="form-label") }}
+                {{ form.price(class="form-control", placeholder="0") }}
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              {{ form.description.label(class="form-label") }}
+              {{ form.description(class="form-control", rows="3", placeholder="Describe your event here...") }}
+            </div>
+
+            <!-- Image Upload -->
+            <div class="mb-3">
+              {{ form.image.label(class="form-label") }}
+              {{ form.image(class="form-control", accept="image/*") }}
+            </div>
+
+            <!-- Featured Event -->
+            <div class="mb-3 form-check">
+              {{ form.featuredevent(class="form-check-input") }}
+              {{ form.featuredevent.label(class="form-check-label") }}
+            </div>
+
+            <!-- Submit Button -->
+            {{ form.submit(class="btn btn-primary w-100") }}
+
+          </form>
+
         </div>
+      </div>
 
-        <div class="mb-3">
-          {{ form.date.label(class="form-label") }} {{
-          form.date(class="form-control") }}
-        </div>
-
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
-            {{ form.quantity.label(class="form-label") }} {{
-            form.quantity(class="form-control", placeholder="1") }}
-          </div>
-          <div class="col-md-6">
-            {{ form.price.label(class="form-label") }} {{
-            form.price(class="form-control", placeholder="0") }}
-          </div>
-        </div>
-
-        <div class="mb-3">
-          {{ form.description.label(class="form-label") }} {{
-          form.description(class="form-control", rows="3", placeholder="Describe your event here...") }}
-        </div>
-
-        <div class="mb-3">
-          {{ form.image.label(class="form-label") }} {{
-          form.image(class="form-control", accept="image/*") }}
-        </div>
-
-        <!-- Featured Event -->
-
-        <div class="mb-3 form-check">
-          {{ form.featuredevent(class="form-check-input") }}
-          {{ form.featuredevent.label(class="form-check-label") }}
-        </div>
-
-        {{ form.submit(class="btn btn-primary w-100") }}
-      </form>
     </div>
   </div>
 </div>
+
 {% endblock %}

@@ -1,200 +1,128 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IAB207 Assignment 2</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<<<<<<< HEAD
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- <link rel="stylesheet" href="../static/style/styles.css"> Not working in some routes -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
-=======
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="../static/style/styles.css" >
 
-  <!-- Only resize specific navbar buttons (keeps everything else the same) -->
-  <style>
-    /* If your paths differ, adjust the href selectors accordingly */
-    .navbar a.btn[href*="/events/create"],
-    .navbar a.btn[href*="/events/books"] {
-      display: inline-flex;
-      align-items: center;
-      height: 42px;                 /* match your other button/link height */
-      padding-top: 0 !important;
-      padding-bottom: 0 !important;
-      padding-left: 12px !important;
-      padding-right: 12px !important;
-      line-height: 1.25;
-      box-sizing: border-box;
-      white-space: nowrap;          /* prevent wrap if icon + text */
-    }
-  </style>
->>>>>>> Haris-first-branch
+  <!-- Bootstrap & Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-  <!-- Main content grows to fill space, pushing footer to bottom -->
+
+  <!-- Main content grows to fill space, pushing footer down -->
   <main class="flex-grow-1">
+
     <!-- Header -->
     <header>
-<<<<<<< HEAD
-=======
-      <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-        <div class="container">
-          <a class="navbar-brand fw-bold" href="{{ url_for('main.index') }}" target="_top">
-            <i class="fa-solid fa-ticket"></i> EventFinder
-          </a>
->>>>>>> Haris-first-branch
 
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg bg-light border-bottom shadow-sm">
+        <div class="container">
+
+          <!-- Brand -->
+          <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('main.index') }}">
+            <i class="fa-solid fa-ticket me-2"></i> EventFinder
+          </a>
+
+          <!-- Mobile toggle -->
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
 
+          <!-- Collapsible content -->
           <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Single search field (no location) -->
-            <form class="d-flex my-2 my-lg-0 w-100" role="search">
-              <div class="input-group">
-                <span class="input-group-text" aria-hidden="true">
-                  <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" class="form-control" placeholder="Search Events" aria-label="Search events">
-                <button class="btn btn-primary" type="submit" disabled aria-label="Search">
+
+            <!-- Wider search bar -->
+            <form class="d-flex flex-grow-1 mx-lg-4 my-2 my-lg-0" action="{{ url_for('main.search') }}">
+              <div class="input-group w-100">
+                <input type="text" name="search" class="form-control" id="SearchForm" placeholder="Search events..."
+                  aria-label="Search events">
+                <button class="btn btn-outline-primary" type="submit">
                   <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
               </div>
             </form>
 
-<<<<<<< HEAD
-                <!-- Collapsible content -->
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-
-                    <!-- Search bar -->
-
-                    <form class="d-flex my-2 my-lg-0 w-100" action="{{ url_for('main.search') }}">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-                            <input type="text" name="search" class="form-control" id="SearchForm">
-                            <button class="btn btn-primary" type="submit">
-                                Search
-                            </button>
-                        </div>
-                    </form>
-
-                    <!-- Nav buttons -->
-
-                    <ul class="navbar-nav ms-auto mt-2 mt-lg-0 gap-2 ps-lg-2">
-                        <li class="nav-item">
-                            <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/books" target="_top">
-                                <i class="fa-solid fa-ticket me-1"></i> My Bookings
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/create" target="_top">
-                                <i class="fa-solid fa-calendar-plus me-1"></i> Create Event
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/my_events" target="_top">
-                                <i class="fa-solid fa-calendar-check me-1"></i> My Events
-                            </a>
-                        </li>
-                        {% if current_user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="btn btn-primary w-100" href="{{ url_for('auth.logout') }}">Logout</a>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="btn btn-primary w-100" href="{{ url_for('auth.login') }}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-primary w-100" href="{{ url_for('auth.register') }}">Register</a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-    <!-- flashes any messages to the user -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %} <!-- check if there are any messages -->
-        <div class="container mt-3">
-            {% for category, message in messages %}
-            {% if category == "message" %}
-            {% set category = "info" %} <!-- default to info -->
-            {% endif %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
-    <!-- End flash message code -->
-    
-        {% block header %}
-=======
-            <!-- Nav buttons -->
-            <ul class="navbar-nav ms-auto mt-2 mt-lg-0 gap-2 ps-lg-2">
+            <!-- Navigation links -->
+            <ul class="navbar-nav mb-2 mb-lg-0 align-items-lg-center">
               <li class="nav-item">
-                <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/books" target="_top">
-                  <i class="fa-solid fa-calendar-check me-1"></i> My Events
+                <a class="nav-link" href="/events/books">
+                  <i class="fa-solid fa-ticket me-1"></i> My Bookings
                 </a>
               </li>
               <li class="nav-item">
-                <a class="btn btn-outline-secondary w-100 btn-nowrap" href="/events/create" target="_top">
+                <a class="nav-link" href="/events/create">
                   <i class="fa-solid fa-calendar-plus me-1"></i> Create Event
                 </a>
               </li>
-              {% if current_user.is_authenticated %}
               <li class="nav-item">
-                <a class="btn btn-primary w-100" href="{{ url_for('auth.logout') }}">Logout</a>
+                <a class="nav-link" href="/events/my_events">
+                  <i class="fa-solid fa-calendar-check me-1"></i> My Events
+                </a>
+              </li>
+
+              {% if current_user.is_authenticated %}
+              <li class="nav-item ms-lg-3">
+                <a class="btn btn-sm btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
               </li>
               {% else %}
-              <li class="nav-item">
-                <a class="btn btn-primary w-100" href="{{ url_for('auth.login') }}">Login</a>
-              </li>
-              <li class="nav-item">
-                <a class="btn btn-primary w-100" href="{{ url_for('auth.register') }}">Register</a>
+              <li class="nav-item ms-lg-3 d-flex">
+                <a class="btn btn-sm btn-outline-primary me-2" href="{{ url_for('auth.login') }}">Login</a>
+                <a class="btn btn-sm btn-primary" href="{{ url_for('auth.register') }}">Register</a>
               </li>
               {% endif %}
             </ul>
+
           </div>
         </div>
       </nav>
->>>>>>> Haris-first-branch
 
-      <div class="container-fluid">
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            {% for message in get_flashed_messages() %}
-              <div class="alert alert-warning">
-                <button type="button" class="close" data-dismiss="alert" aria-label="close">x</button>
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+      <!-- Flash messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="container mt-3">
+        {% for category, message in messages %}
+        {% if category == "message" %}
+        {% set category = "info" %}
+        {% endif %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
       </div>
+      {% endif %}
+      {% endwith %}
 
-      {% block header %}{% endblock %}
+      <!-- Optional header block for page-specific content -->
+      {% block header %}
+      {% endblock %}
+
     </header>
 
-    {% block content %}{% endblock %}
+    <!-- Main page content -->
+    {% block content %}
+    {% endblock %}
+
   </main>
 
   <!-- Footer -->
-  <footer class="bg-dark text-light pt-5 pb-4">
+  <footer class="bg-dark text-light pt-5 pb-4 mt-auto">
     <div class="container">
       <div class="row">
+
         <div class="col-12 col-md-3 mb-4">
           <h5 class="mb-3">
-            <a class="navbar-brand fw-bold" href="{{ url_for('main.index') }}" target="_top">
+            <a class="navbar-brand fw-bold text-light text-decoration-none" href="{{ url_for('main.index') }}">
               <i class="fa-solid fa-ticket"></i> EventFinder
             </a>
           </h5>
@@ -224,12 +152,16 @@
         <div class="col-12 col-md-3 mb-4">
           <h6 class="text-uppercase">Follow Us</h6>
           <div class="d-flex gap-2">
-            <a href="https://www.facebook.com/" target="_blank" class="text-light fs-5"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.facebook.com/" target="_blank" class="text-light fs-5"><i
+                class="fab fa-facebook-f"></i></a>
             <a href="https://x.com/" target="_blank" class="text-light fs-5"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.instagram.com/" target="_blank" class="text-light fs-5"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.linkedin.com/" target="_blank" class="text-light fs-5"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.instagram.com/" target="_blank" class="text-light fs-5"><i
+                class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/" target="_blank" class="text-light fs-5"><i
+                class="fab fa-linkedin-in"></i></a>
           </div>
         </div>
+
       </div>
 
       <hr class="bg-secondary">
@@ -239,8 +171,12 @@
       </div>
     </div>
   </footer>
+
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-          crossorigin="anonymous"></script>
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+
 </body>
+
 </html>

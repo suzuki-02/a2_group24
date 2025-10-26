@@ -32,6 +32,7 @@ class Event(db.Model):
     description = db.Column(db.String(200))
     image = db.Column(db.String(400))
     featuredevent = db.Column(db.Boolean, default=False)
+    genre = db.Column(db.String(50))
 
     # Event state (Open, Inactive, Sold Out, Cancelled)
     status = db.Column(db.String(20), nullable=False, default="Open")

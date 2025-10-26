@@ -18,42 +18,72 @@ def show(id):
 @events_bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
-    print('Method type: ', request.method)
+    print('Method type:', request.method)
     form = EventForm()
+
+    if request.method == 'POST':
+        print("📩 Form submitted")
+        print("Door time:", form.door_time.data, "| Start time:", form.start_time.data)
+
+        # 🕒 Check that start time is after door time
+        if form.start_time.data and form.door_time.data:
+            if form.start_time.data <= form.door_time.data:
+                flash("Start time must be after door time.", "danger")
+                print("❌ Flash triggered — start time is before or equal to door time.")
+                return render_template('events/create.html', form=form)
 
     if form.validate_on_submit():
         db_file_path = check_upload_file(form)
+
         event = Event(
             title=form.title.data,
             date=form.date.data,
             price=form.price.data,
             quantity=form.quantity.data,
             description=form.description.data,
-            image=db_file_path,
-            featuredevent=form.featuredevent.data,  # ✅ add this line
-            creator=current_user
+            image=db_file_path or '/static/image/default_event.jpg',
+            featuredevent=form.featuredevent.data,
+            genre=form.genre.data,
+            creator_id=current_user.id
         )
 
         db.session.add(event)
         db.session.commit()
+        print(f"✅ Event added with ID {event.id}")
+        flash("Event created successfully!", "success")
         return redirect(url_for('event.show', id=event.id))
+    else:
+        if request.method == 'POST':
+            print('❌ Validation failed:', form.errors)
 
     return render_template('events/create.html', form=form)
 
 
+
+
+
+
 def check_upload_file(form):
-  # get file data from form  
-  fp = form.image.data
-  filename = fp.filename
-  # get the current path of the module file… store image file relative to this path  
-  BASE_PATH = os.path.dirname(__file__)
-  # upload file location – directory of this file/static/image
-  upload_path = os.path.join(BASE_PATH, 'static', 'image', secure_filename(filename))
-  # store relative path in DB as image location in HTML is relative
-  db_upload_path = '/static/image/' + secure_filename(filename)
-  # save the file and return the db upload path  
-  fp.save(upload_path)
-  return db_upload_path
+    """Safely handle optional file uploads and return the image path or None."""
+    fp = form.image.data
+
+    # If no file selected
+    if not fp:
+        return None
+
+    filename = secure_filename(fp.filename)
+    if not filename:  # empty filename string
+        return None
+
+    # Define paths
+    BASE_PATH = os.path.dirname(__file__)
+    upload_path = os.path.join(BASE_PATH, 'static', 'image', filename)
+    db_upload_path = '/static/image/' + filename
+
+    # Save file
+    fp.save(upload_path)
+    return db_upload_path
+
 
 @events_bp.route('/<id>/comment', methods=['GET', 'POST'])
 @login_required
@@ -184,3 +214,17 @@ def cancel(id):
 
     flash("Event has been cancelled successfully.", "warning")
     return redirect(url_for('event.my_events'))
+
+@events_bp.route('/genre/<genre_name>')
+def genre_page(genre_name):
+    # Get all events that match the genre (case-insensitive)
+    events = Event.query.filter(Event.genre.ilike(genre_name)).order_by(Event.date.asc()).all()
+    featured_events = Event.query.filter_by(featuredevent=True).limit(5).all()
+
+    return render_template(
+        "events/genre.html",
+        genre_name=genre_name,
+        events=events,
+        featured_events=featured_events
+    )
+

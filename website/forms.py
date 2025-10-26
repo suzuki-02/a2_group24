@@ -1,8 +1,14 @@
 import re
 from flask_wtf import FlaskForm
-from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField, DateField, DecimalField, IntegerField, BooleanField
+from wtforms import SelectField   # ✅ add this import
+from wtforms.fields import (
+    TextAreaField, SubmitField, StringField, PasswordField,
+    DateField, TimeField, DecimalField, IntegerField, BooleanField
+)
 from wtforms.validators import InputRequired, Email, EqualTo, NumberRange
-from flask_wtf.file import FileRequired, FileField, FileAllowed, ValidationError
+from flask_wtf.file import FileField, FileAllowed, ValidationError
+from wtforms.widgets import TimeInput
+
 
 ALLOWED_FILE = {'PNG', 'JPG', 'JPEG', 'png', 'jpg', 'jpeg'}
 
@@ -23,7 +29,6 @@ class RegisterForm(FlaskForm):
     contact_number = StringField("Contact Number", validators=[InputRequired()])
     street_address = StringField("Street Address", validators=[InputRequired()])
 
-    # Password + confirm (EqualTo already present)
     password = PasswordField(
         "Password",
         validators=[
@@ -32,7 +37,6 @@ class RegisterForm(FlaskForm):
         ]
     )
     confirm = PasswordField("Confirm Password")
-
     submit = SubmitField("Register")
 
     # ---- Phone validation (AU mobile + landline) ----
@@ -49,35 +53,19 @@ class RegisterForm(FlaskForm):
     # ---- Password complexity validation ----
     def validate_password(self, field):
         pw = field.data or ""
-
-        # RULES (tweak as needed):
         min_len = 8
-        require_upper = True
-        require_lower = True
-        require_digit = True
-        require_special = True
-        disallow_spaces = True
-
         if len(pw) < min_len:
             raise ValidationError(f"Password must be at least {min_len} characters long.")
-
-        if disallow_spaces and re.search(r"\s", pw):
+        if re.search(r"\s", pw):
             raise ValidationError("Password must not contain spaces.")
-
-        if require_upper and not re.search(r"[A-Z]", pw):
+        if not re.search(r"[A-Z]", pw):
             raise ValidationError("Password must include at least one uppercase letter (A–Z).")
-
-        if require_lower and not re.search(r"[a-z]", pw):
+        if not re.search(r"[a-z]", pw):
             raise ValidationError("Password must include at least one lowercase letter (a–z).")
-
-        if require_digit and not re.search(r"\d", pw):
+        if not re.search(r"\d", pw):
             raise ValidationError("Password must include at least one digit (0–9).")
-
-        # You can adjust the special set if your policy differs
-        if require_special and not re.search(r"[!@#$%^&*()_\-+=\[\]{};:,.?/~`|\\]", pw):
+        if not re.search(r"[!@#$%^&*()_\-+=\[\]{};:,.?/~`|\\]", pw):
             raise ValidationError("Password must include at least one special character (e.g. !@#$%).")
-
-        # (Optional) block very common passwords even if they meet rules
         common = {"password", "letmein", "qwerty", "abc123", "12345678", "iloveyou"}
         if pw.lower() in common:
             raise ValidationError("That password is too common. Please choose a stronger one.")
@@ -97,6 +85,20 @@ class EventForm(FlaskForm):
     door_time  = TimeField('Door Time',  format='%H:%M',
                            validators=[InputRequired()], widget=TimeInput())
 
+    # 🎵 Genre dropdown
+    genre = SelectField(
+        'Genre',
+        choices=[
+            ('Rock', 'Rock'),
+            ('Jazz', 'Jazz'),
+            ('Pop', 'Pop'),
+            ('Hip Hop', 'Hip Hop'),
+            ('Electronic', 'Electronic'),
+            ('Classical', 'Classical')
+        ],
+        validators=[InputRequired()]
+    )
+
     price = DecimalField('Ticket Price ($)', places=2, validators=[
         InputRequired(), NumberRange(min=0, message="Price must be positive")
     ])
@@ -105,15 +107,17 @@ class EventForm(FlaskForm):
     ])
     description = TextAreaField('Description', validators=[InputRequired()])
     featuredevent = BooleanField('Make this a featured event')
+
     image = FileField('Event Image', validators=[
-        FileRequired(message='Image cannot be empty'),
         FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')
     ])
+
     submit = SubmitField("Create")
 
     def validate_door_time(self, field):
         if self.start_time.data and field.data and field.data > self.start_time.data:
             raise ValidationError("Door time must be before the start time.")
+
 
 
 # -------------------
@@ -132,10 +136,24 @@ class PurchaseForm(FlaskForm):
     ])
     submit = SubmitField('Purchase')
 
-# Update event
+
 class EventUpdateForm(FlaskForm):
     title = StringField('Event Title', validators=[InputRequired()])
     date = DateField('Event Date', format='%Y-%m-%d', validators=[InputRequired()])
+    genre = SelectField(
+    'Genre',
+    choices=[
+        ('House', 'House'),
+        ('Rock', 'Rock'),
+        ('Jazz', 'Jazz'),
+        ('Pop', 'Pop'),
+        ('Hip Hop', 'Hip Hop'),
+        ('R&B', 'R&B'),          # 🎵 added
+        ('Electronic', 'Electronic'),
+        ('Classical', 'Classical')
+    ],
+    validators=[InputRequired()]
+    )
     price = DecimalField('Ticket Price ($)', places=2, validators=[
         InputRequired(), NumberRange(min=0, message="Price must be positive")
     ])
@@ -144,5 +162,6 @@ class EventUpdateForm(FlaskForm):
     ])
     description = TextAreaField('Description', validators=[InputRequired()])
     image = FileField('Event Image', validators=[
-    FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')])
+        FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')
+    ])
     submit = SubmitField("Update")

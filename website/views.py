@@ -101,10 +101,40 @@ def index():
 
 @main_bp.route("/events/filter")
 def filter_events():
+    """AJAX endpoint for filtering events by genre and/or date (today, weekend, etc.)."""
     filter_type = request.args.get("filter", _DEFAULT_FILTER)
-    events = _safe_query(lambda: _fetch_events(filter_type))
-    if not events and filter_type != "weekend":
-        events = _safe_query(lambda: _fetch_events("weekend"))
+    genre = request.args.get("genre", None)
+
+    print(f"DEBUG: /events/filter called with filter='{filter_type}', genre='{genre}'")
+
+    # Start with base query
+    today = datetime.today().date()
+    query = Event.query.filter(Event.date != None)  # noqa: E711
+
+    # 🎵 Genre filtering (case-insensitive)
+    if genre and genre.lower() != "all":
+        query = query.filter(db.func.lower(Event.genre) == genre.lower())
+
+    # 🗓️ Date filtering
+    if filter_type == "today":
+        query = query.filter(db.func.date(Event.date) == today)
+    elif filter_type == "weekend":
+        saturday, sunday = _weekend_bounds(today)
+        query = query.filter(db.func.date(Event.date).between(saturday, sunday))
+    elif filter_type == "past":
+        query = query.filter(
+            db.func.julianday(Event.date) < db.func.julianday(db.func.date("now"))
+        )
+    else:
+        query = query.filter(
+            db.func.julianday(Event.date) >= db.func.julianday(db.func.date("now"))
+        )
+
+    # Sort and fetch
+    events = query.order_by(db.func.julianday(Event.date).asc()).all()
+
+    print(f"DEBUG: {len(events)} events found for genre='{genre}', filter='{filter_type}'")
+
     return render_template("_event_cards.html", events=events)
 
 
