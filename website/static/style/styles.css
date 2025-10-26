@@ -156,7 +156,7 @@ nav .form-control{
   border-radius:.75rem;
 }
 .form-control:focus{
-  border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.25);
+  border-color:#f63b3b; box-shadow:0 0 0 3px rgba(59,130,246,.25);
 } */
 
 /* File input tweak */
@@ -171,7 +171,7 @@ nav .form-control{
 }
 .btn-outline-secondary{
   border:1px solid var(--border)!important;
-  color:#cfd6df!important;
+  color:#b5c3d6!important;
 }
 .btn-outline-secondary:hover{
   background:#1f2633!important;
@@ -267,3 +267,37 @@ textarea.form-control::placeholder {
   border-color: var(--theme);
   transform: scale(1.01);
 }
+/* ---------- Auth pages (login/register) ---------- */
+.auth-wrap{
+  min-height: calc(100vh - 200px); /* full page minus header/footer */
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+}
+
+.auth-card{
+  width: 100%;
+  max-width: 520px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  padding: 1.25rem 1.25rem 1.5rem;
+}
+
+/* Form pieces inside the card */
+.auth-card .form-label{ color: var(--muted); }
+.auth-card .form-control{
+  background: #0f141a;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: .75rem;
+}
+.auth-card .form-control::placeholder{ color: #c7ced8; }
+
+.auth-card .btn-primary{
+  background: var(--brand);
+  border: none;
+}
+.auth-card .btn-primary:hover{ background: var(--brand-600); }
