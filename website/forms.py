@@ -1,6 +1,6 @@
 import re
 from flask_wtf import FlaskForm
-from wtforms import SelectField   # ✅ add this import
+from wtforms import SelectField
 from wtforms.fields import (
     TextAreaField, SubmitField, StringField, PasswordField,
     DateField, TimeField, DecimalField, IntegerField, BooleanField
@@ -39,7 +39,7 @@ class RegisterForm(FlaskForm):
     confirm = PasswordField("Confirm Password")
     submit = SubmitField("Register")
 
-    # ---- Phone validation (AU mobile + landline) ----
+    # ---- Phone validation ----
     def validate_contact_number(self, field):
         raw = field.data or ""
         num = re.sub(r"[()\s-]+", "", raw)
@@ -78,14 +78,16 @@ class RegisterForm(FlaskForm):
 class EventForm(FlaskForm):
     title = StringField('Event Title', validators=[InputRequired()])
     date = DateField('Event Date', format='%Y-%m-%d', validators=[InputRequired()])
+    venue = StringField('Venue', validators=[InputRequired()])
+    genre = StringField('Genre', validators=[InputRequired()])
 
-    # Times (HTML5 time inputs)
+    # Times
     start_time = TimeField('Start Time', format='%H:%M',
-                           validators=[InputRequired()], widget=TimeInput())
+                        validators=[InputRequired()], widget=TimeInput())
     door_time  = TimeField('Door Time',  format='%H:%M',
-                           validators=[InputRequired()], widget=TimeInput())
+                        validators=[InputRequired()], widget=TimeInput())
 
-    # 🎵 Genre dropdown
+    # Genre dropdown
     genre = SelectField(
         'Genre',
         choices=[
@@ -148,7 +150,7 @@ class EventUpdateForm(FlaskForm):
         ('Jazz', 'Jazz'),
         ('Pop', 'Pop'),
         ('Hip Hop', 'Hip Hop'),
-        ('R&B', 'R&B'),          # 🎵 added
+        ('R&B', 'R&B'), 
         ('Electronic', 'Electronic'),
         ('Classical', 'Classical')
     ],

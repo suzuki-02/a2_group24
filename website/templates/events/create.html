@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% from 'bootstrap5/form.html' import render_form %}
-{% block content %}
 
+{% block content %}
 <div class="container mt-5 mb-5">
   <div class="row justify-content-center">
     <div class="col-lg-8 col-md-10">
@@ -24,6 +24,18 @@
               {{ form.title(class="form-control", placeholder="Enter event title") }}
             </div>
 
+            <!-- Venue -->
+            <div class="mb-3">
+              {{ form.venue.label(class="form-label") }}
+              {{ form.venue(class="form-control", placeholder="Enter event venue") }}
+            </div>
+
+            <!-- Genre -->
+            <div class="mb-3">
+              {{ form.genre.label(class="form-label") }}
+              {{ form.genre(class="form-select") }}
+            </div>
+
             <!-- Date -->
             <div class="mb-3">
               {{ form.date.label(class="form-label") }}
@@ -39,16 +51,16 @@
               <div class="col-md-6">
                 {{ form.door_time.label(class="form-label") }}
                 {{ form.door_time(class="form-control", type="time") }}
+
+                {% for err in form.door_time.errors %}
+                <div class="text-danger small mt-1">
+                  <i class="fa-solid fa-triangle-exclamation me-1"></i>{{ err }}
+                </div>
+                {% endfor %}
               </div>
             </div>
 
-            <!-- Genre -->
-            <div class="mb-3">
-              {{ form.genre.label(class="form-label") }}
-              {{ form.genre(class="form-select") }}
-            </div>
-
-            <!-- Ticket Details -->
+            <!-- Quantity and Price -->
             <div class="row g-3 mb-3">
               <div class="col-md-6">
                 {{ form.quantity.label(class="form-label") }}
@@ -82,12 +94,10 @@
             {{ form.submit(class="btn btn-primary w-100") }}
 
           </form>
-
         </div>
       </div>
 
     </div>
   </div>
 </div>
-
 {% endblock %}

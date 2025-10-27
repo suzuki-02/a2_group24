@@ -3,7 +3,7 @@ from datetime import datetime
 from flask_login import UserMixin
 
 class User(db.Model, UserMixin):
-    __tablename__ = 'users' # good practice to specify table name
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), index=True, nullable=False)
     last_name = db.Column(db.String(50), index=True, nullable=False)
@@ -26,7 +26,11 @@ class Event(db.Model):
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
+    genre = db.Column(db.String(50))
+    venue = db.Column(db.String(100))
     date = db.Column(db.Date, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    door_time = db.Column(db.Time, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.String(200))
@@ -37,7 +41,7 @@ class Event(db.Model):
     # Event state (Open, Inactive, Sold Out, Cancelled)
     status = db.Column(db.String(20), nullable=False, default="Open")
 
-    # ... Create the Comments db.relationship
+    # Create the Comments db.relationship
 	# relation to call event.comments and comment.event
     comments = db.relationship('Comment', backref='event')
 

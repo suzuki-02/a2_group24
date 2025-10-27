@@ -2,7 +2,6 @@
 
 {% block card_content %}
   <p class="card-text mb-1"><strong>Date:</strong> {{ event.date.strftime('%b %d, %Y') }}</p>
-  <!-- <p class="card-text mb-1"><strong>Status:</strong> {{ event.status }}</p> -->
   <p class="card-text mb-3"><strong>Tickets Left:</strong> {{ event.quantity }}</p>
 {% endblock %}
 

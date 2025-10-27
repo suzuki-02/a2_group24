@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, render_template, request, url_for, redirect
 from flask_bcrypt import generate_password_hash, check_password_hash
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, logout_user
 from .models import User
 from .forms import LoginForm, RegisterForm
 from . import db
@@ -41,7 +41,15 @@ def logout():
 @auth_bp.route('/register', methods=['GET','POST'])
 def register():
     register_form = RegisterForm()
+
     if register_form.validate_on_submit():
+        # Check if email already exists
+        existing_user = db.session.scalar(db.select(User).where(User.email == register_form.email.data))
+        if existing_user:
+            flash("That email is already registered. Please log in instead.", "warning")
+            return redirect(url_for("auth.login"))
+        
+        # Otherwise, create new user
         user = User(
             first_name = register_form.first_name.data,
             last_name = register_form.last_name.data,
@@ -50,8 +58,11 @@ def register():
             email = register_form.email.data,
             password_hash = generate_password_hash(register_form.password.data)
         )
-        
+
         db.session.add(user)
         db.session.commit()
+
+        flash("Registration successful! You can now log in.", "success")  # optional nice message
         return redirect(url_for('auth.login'))
+
     return render_template('user.html', form=register_form, heading='Register')

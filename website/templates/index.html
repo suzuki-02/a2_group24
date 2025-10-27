@@ -7,7 +7,7 @@
 
 <div class="container my-5">
 
-  <!-- 🎵 Genre filters -->
+  <!-- Genre filters -->
   <div class="genre-filter-grid mb-5">
     {% set genres = [
     {'name': 'Rock', 'img': url_for('static', filename='image/rock.png')},
@@ -28,11 +28,8 @@
     {% endfor %}
   </div>
 
-
-
-
-  <!-- 🗓️ Date/time filters -->
-  <ul class="nav nav-underline mb-3" id="filterTabs">
+  <!-- Date/time filters -->
+  <ul class="nav nav-underline mb-4" id="filterTabs">
     <li class="nav-item">
       <a class="nav-link active" href="#" data-filter="all">All</a>
     </li>
@@ -44,24 +41,21 @@
     </li>
   </ul>
 
-  <!-- 🎫 Event grid -->
+
+  <!-- Event grid -->
   <div class="mb-3">
-    <div id="event-grid">
+    <div id="event-grid" class="row g-3 justify-content-start">
       {% include "_event_cards.html" %}
     </div>
   </div>
 
-  <!-- 📅 Load more events -->
-  <div class="text-center">
-    <button class="btn btn-primary mb-3" type="button">Load more events</button>
-  </div>
 </div>
 
 <!-- Bootstrap script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
-  /* 🎶 Genre Grid */
+  /* Genre Grid (Dark Theme) */
   .genre-filter-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -73,17 +67,18 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    transition: all 0.2s ease-in-out;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    background: #1e1e1e;
+    border: 1px solid #2c2c2c;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   }
 
   .genre-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0, 255, 255, 0.15);
+    border-color: white;
   }
 
   .genre-image-wrapper {
@@ -92,24 +87,49 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fafafa;
+    background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
   }
 
   .genre-image {
     max-width: 80%;
     max-height: 80%;
-    object-fit: contain; /* ✅ shows full image without cropping */
+    object-fit: contain;
+    filter: brightness(0.9) contrast(1.05);
+    transition: filter 0.25s ease;
+  }
+
+  .genre-card:hover .genre-image {
+    filter: brightness(1.15) contrast(1.15);
   }
 
   .genre-name {
     font-weight: 600;
-    color: #333;
+    color: #e0e0e0;
     padding: 0.6rem;
     font-size: 0.95rem;
+    background-color: #141414;
+    width: 100%;
+    border-top: 1px solid #2b2b2b;
+    transition: color 0.25s ease;
+  }
+
+  .genre-card:hover .genre-name {
+    color: white;
+  }
+
+  /* Optional active state for selected genre */
+  .genre-card.active {
+    border-color: white;
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
+  }
+
+  .genre-card.active .genre-name {
+    color: white;
   }
 </style>
 
-<!-- 🔁 No reload filtering -->
+
+<!-- No reload filtering -->
 <script>
   let activeGenre = null;
   let activeDateFilter = "all";
@@ -129,7 +149,7 @@
     document.getElementById('event-grid').innerHTML = html;
   }
 
-  // 🎵 Genre filter click
+  // Genre filter click
   document.querySelectorAll('[data-genre]').forEach(link => {
     link.addEventListener('click', async (e) => {
       e.preventDefault();
@@ -143,7 +163,7 @@
     });
   });
 
-  // 🗓️ Date filter click
+  // Date filter click
   document.querySelectorAll('.nav-link[data-filter]').forEach(link => {
     link.addEventListener('click', async (e) => {
       e.preventDefault();

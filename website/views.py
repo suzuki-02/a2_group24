@@ -1,6 +1,5 @@
 from datetime import date, datetime, timedelta
-
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, render_template, request, redirect, url_for
 from sqlalchemy import or_
 
 from . import db
@@ -11,6 +10,9 @@ main_bp = Blueprint("main", __name__)
 _DEFAULT_FILTER = "all"
 
 
+# -------------------------------
+# Utility: Weekend date range
+# -------------------------------
 def _weekend_bounds(today: date) -> tuple[date, date]:
     """Return the Saturday/Sunday pair for the weekend covering `today`."""
     weekday = today.weekday()  # Monday=0, Sunday=6
@@ -22,6 +24,9 @@ def _weekend_bounds(today: date) -> tuple[date, date]:
     return saturday, sunday
 
 
+# -------------------------------------
+# Event query helpers (with filters)
+# -------------------------------------
 def _fetch_events(filter_type: str) -> list[Event]:
     """Fetch events for the requested filter; defaults to upcoming."""
     today = datetime.today().date()
@@ -37,7 +42,7 @@ def _fetch_events(filter_type: str) -> list[Event]:
             db.func.julianday(Event.date) < db.func.julianday(db.func.date("now"))
         )
     else:
-        # treat "all" and any unknown values as upcoming events
+        # treat "all" and unknown values as upcoming events
         query = query.filter(
             db.func.julianday(Event.date) >= db.func.julianday(db.func.date("now"))
         )
@@ -45,6 +50,9 @@ def _fetch_events(filter_type: str) -> list[Event]:
     return query.order_by(db.func.julianday(Event.date).asc()).all()
 
 
+# -----------------------------------------
+# Featured events (carousel population)
+# -----------------------------------------
 def _fetch_featured_events() -> list[Event]:
     """Return the featured events to show in the carousel (next 5 upcoming)."""
     return (
@@ -59,33 +67,41 @@ def _fetch_featured_events() -> list[Event]:
     )
 
 
+# --------------------------------
+# Safe query wrapper
+# --------------------------------
 def _safe_query(callable_, fallback=None):
     """Execute a query helper, logging failures and returning a fallback list."""
     try:
         return callable_()
-    except Exception as ex:  # pragma: no cover - defensive logging
+    except Exception as ex:
         try:
             db.session.rollback()
         except Exception:
             pass
         try:
             from flask import current_app
-
             current_app.logger.exception("Query failed: %r", ex)
         except Exception:
             pass
         return [] if fallback is None else fallback()
 
 
+# -----------------------------
+# Home Page
+# -----------------------------
 @main_bp.route("/")
 def index():
+    """Main homepage with event list and featured carousel."""
     filter_type = request.args.get("filter", _DEFAULT_FILTER)
 
+    # Fetch events for the selected filter
     events = _safe_query(lambda: _fetch_events(filter_type))
     if not events and filter_type != "weekend":
-        # Fallback to this weekend's events so the home page never feels empty.
+        # fallback to weekend events so homepage never feels empty
         events = _safe_query(lambda: _fetch_events("weekend"))
 
+    # Fetch featured events for carousel
     featured_events = _safe_query(_fetch_featured_events)
 
     print(f"DEBUG: {len(events)} events found for filter '{filter_type}'")
@@ -99,6 +115,9 @@ def index():
     )
 
 
+# -----------------------------
+# AJAX Event Filtering
+# -----------------------------
 @main_bp.route("/events/filter")
 def filter_events():
     """AJAX endpoint for filtering events by genre and/or date (today, weekend, etc.)."""
@@ -107,15 +126,14 @@ def filter_events():
 
     print(f"DEBUG: /events/filter called with filter='{filter_type}', genre='{genre}'")
 
-    # Start with base query
     today = datetime.today().date()
-    query = Event.query.filter(Event.date != None)  # noqa: E711
+    query = Event.query.filter(Event.date != None)
 
-    # 🎵 Genre filtering (case-insensitive)
+    # Genre filtering (case-insensitive)
     if genre and genre.lower() != "all":
         query = query.filter(db.func.lower(Event.genre) == genre.lower())
 
-    # 🗓️ Date filtering
+    # Date filtering
     if filter_type == "today":
         query = query.filter(db.func.date(Event.date) == today)
     elif filter_type == "weekend":
@@ -130,13 +148,12 @@ def filter_events():
             db.func.julianday(Event.date) >= db.func.julianday(db.func.date("now"))
         )
 
-    # Sort and fetch
     events = query.order_by(db.func.julianday(Event.date).asc()).all()
 
     print(f"DEBUG: {len(events)} events found for genre='{genre}', filter='{filter_type}'")
-
     return render_template("_event_cards.html", events=events)
 
+# Search Route
 
 @main_bp.route("/search")
 def search():
@@ -165,3 +182,12 @@ def search():
         active_filter="search",
         search_query=query_text,
     )
+
+
+# -----------------------------
+# Error Handling
+# -----------------------------
+@main_bp.app_errorhandler(403)
+def forbidden(e):
+    """Custom 403 Forbidden error page."""
+    return render_template("errors/403.html"), 403
