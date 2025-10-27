@@ -167,19 +167,29 @@ def update(id):
         if form.image.data:
             event.image = check_upload_file(form)
         event.title = form.title.data
+        event.venue = form.venue.data
+        event.genre = form.genre.data
         event.date = form.date.data
+        event.start_time = form.start_time.data
+        event.door_time = form.door_time.data
         event.price = form.price.data
         event.quantity = form.quantity.data
         event.description = form.description.data
+        event.featuredevent = form.featuredevent.data
         db.session.commit()
         flash("Event updated successfully", "success")
         return redirect(url_for('event.show', id=event.id))
     elif request.method == 'GET':
         form.title.data = event.title
+        form.venue.data = event.venue
+        form.genre.data = event.genre
         form.date.data = event.date
+        form.start_time.data = event.start_time
+        form.door_time.data = event.door_time
         form.price.data = event.price
         form.quantity.data = event.quantity
         form.description.data = event.description
+        form.featuredevent.data = event.featuredevent
 
     return render_template('events/create.html', form=form, event=event)
 

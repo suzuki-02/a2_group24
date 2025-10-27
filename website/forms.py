@@ -98,9 +98,9 @@ class EventForm(FlaskForm):
 
     # Times
     start_time = TimeField('Start Time', format='%H:%M',
-                           validators=[InputRequired()], widget=TimeInput())
+                        validators=[InputRequired()], widget=TimeInput())
     door_time = TimeField('Door Time', format='%H:%M',
-                          validators=[InputRequired()], widget=TimeInput())
+                        validators=[InputRequired()], widget=TimeInput())
 
     price = DecimalField('Ticket Price ($)', places=2, validators=[
         InputRequired(), NumberRange(min=0, message="Price must be positive")
@@ -166,6 +166,12 @@ class EventUpdateForm(FlaskForm):
         validators=[InputRequired()]
     )
 
+    # Times
+    start_time = TimeField('Start Time', format='%H:%M',
+                        validators=[InputRequired()], widget=TimeInput())
+    door_time = TimeField('Door Time', format='%H:%M',
+                        validators=[InputRequired()], widget=TimeInput())
+
     price = DecimalField('Ticket Price ($)', places=2, validators=[
         InputRequired(), NumberRange(min=0, message="Price must be positive")
     ])
@@ -173,6 +179,7 @@ class EventUpdateForm(FlaskForm):
         InputRequired(), NumberRange(min=0, message="Ticket quantity cannot be negative")
     ])
     description = TextAreaField('Description', validators=[InputRequired()])
+    featuredevent = BooleanField('Make this a featured event')
     image = FileField('Event Image', validators=[
         FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')
     ])

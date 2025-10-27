@@ -14,10 +14,10 @@ instance/*.sqlite
 *.sqlite3
 
 # Images
-website/static/image/
-*.png
-*.jpg
-*.jpeg
+# website/static/image/
+# *.png
+# *.jpg
+# *.jpeg
 
 # Zone Identifier files
 *:Zone.Identifier
