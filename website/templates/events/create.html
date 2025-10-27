@@ -10,9 +10,9 @@
         <div class="card-body p-4">
 
           {% if event %}
-            <h2 class="mb-4 text-center">Update Your Event</h2>
+          <h2 class="mb-4 text-center">Update Your Event</h2>
           {% else %}
-            <h2 class="mb-4 text-center">Create Your Event</h2>
+          <h2 class="mb-4 text-center">Create Your Event</h2>
           {% endif %}
 
           <form method="POST" enctype="multipart/form-data">
@@ -87,7 +87,7 @@
             <!-- Featured Event -->
             <div class="mb-3 form-check">
               {{ form.featuredevent(class="form-check-input") }}
-              {{ form.featuredevent.label(class="form-check-label") }}
+              {{ form.featuredevent.label(class="form-check-label ms-2") }}
             </div>
 
             <!-- Submit Button -->
