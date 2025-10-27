@@ -35,7 +35,6 @@ def _fetch_events(filter_type: str) -> list[Event]:
     elif filter_type == "past":
         query = query.filter(db.func.julianday(Event.date) < db.func.julianday(db.func.date("now")))
     else:
-        # Show all upcoming events, fallback to all if none exist
         query = query.filter(db.func.julianday(Event.date) >= db.func.julianday(db.func.date("now")))
 
     events = query.order_by(db.func.julianday(Event.date).asc()).all()
@@ -74,7 +73,6 @@ def index():
     # Fetch featured events
     featured_events = _fetch_featured_events()
 
-    # Debug output
     print(f"[DEBUG] {len(events)} events found for '{filter_type}'")
     print(f"[DEBUG] {len(featured_events)} featured events found")
 
@@ -87,20 +85,15 @@ def index():
 
 
 # -----------------------------
-# AJAX Event Filtering
+# AJAX Date Filtering Only
 # -----------------------------
 @main_bp.route("/events/filter")
 def filter_events():
-    """AJAX endpoint for filtering events by genre/date."""
+    """AJAX endpoint for filtering events by date only."""
     filter_type = request.args.get("filter", "all")
-    genre = request.args.get("genre", None)
 
     today = datetime.today().date()
     query = Event.query.filter(Event.date != None)
-
-    # Genre filtering
-    if genre and genre.lower() != "all":
-        query = query.filter(db.func.lower(Event.genre) == genre.lower())
 
     # Date filtering
     if filter_type == "today":
@@ -115,12 +108,27 @@ def filter_events():
 
     events = query.order_by(db.func.julianday(Event.date).asc()).all()
 
-    # ✅ Fallback: show all if no match
     if not events:
         events = Event.query.order_by(db.func.julianday(Event.date).asc()).all()
 
-    print(f"[DEBUG] {len(events)} events after filtering (genre={genre}, filter={filter_type})")
+    print(f"[DEBUG] {len(events)} events after filtering by date '{filter_type}'")
     return render_template("_event_cards.html", events=events)
+
+
+# -----------------------------
+# Genre Page (static link)
+# -----------------------------
+@main_bp.route("/genre/<genre_name>")
+def genre_page(genre_name):
+    """Display events for a specific genre (linked from genre buttons)."""
+    events = (
+        Event.query.filter(Event.genre.ilike(genre_name))
+        .order_by(db.func.julianday(Event.date).asc())
+        .all()
+    )
+    print(f"[DEBUG] {len(events)} events found for genre '{genre_name}'")
+
+    return render_template("events/genre.html", genre_name=genre_name, events=events)
 
 
 # -----------------------------

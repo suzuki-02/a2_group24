@@ -1,16 +1,19 @@
 import re
+from datetime import date
+from flask import flash
 from flask_wtf import FlaskForm
-from wtforms import SelectField   # ✅ add this import
+from wtforms import SelectField
 from wtforms.fields import (
     TextAreaField, SubmitField, StringField, PasswordField,
     DateField, TimeField, DecimalField, IntegerField, BooleanField
 )
-from wtforms.validators import InputRequired, Email, EqualTo, NumberRange
-from flask_wtf.file import FileField, FileAllowed, ValidationError
+from wtforms.validators import InputRequired, Email, EqualTo, NumberRange, ValidationError
+from flask_wtf.file import FileField, FileAllowed
 from wtforms.widgets import TimeInput
 
 
 ALLOWED_FILE = {'PNG', 'JPG', 'JPEG', 'png', 'jpg', 'jpeg'}
+
 
 # -------------------
 # Auth forms
@@ -24,7 +27,7 @@ class LoginForm(FlaskForm):
 
 class RegisterForm(FlaskForm):
     first_name = StringField("First Name", validators=[InputRequired()])
-    last_name  = StringField("Last Name", validators=[InputRequired()])
+    last_name = StringField("Last Name", validators=[InputRequired()])
     email = StringField("Email", validators=[Email("Please enter a valid email")])
     contact_number = StringField("Contact Number", validators=[InputRequired()])
     street_address = StringField("Street Address", validators=[InputRequired()])
@@ -79,15 +82,7 @@ class EventForm(FlaskForm):
     title = StringField('Event Title', validators=[InputRequired()])
     date = DateField('Event Date', format='%Y-%m-%d', validators=[InputRequired()])
     venue = StringField('Venue', validators=[InputRequired()])
-    genre = StringField('Genre', validators=[InputRequired()])
 
-    # Times
-    start_time = TimeField('Start Time', format='%H:%M',
-                        validators=[InputRequired()], widget=TimeInput())
-    door_time  = TimeField('Door Time',  format='%H:%M',
-                        validators=[InputRequired()], widget=TimeInput())
-
-    # Genre dropdown
     genre = SelectField(
         'Genre',
         choices=[
@@ -100,6 +95,12 @@ class EventForm(FlaskForm):
         ],
         validators=[InputRequired()]
     )
+
+    # Times
+    start_time = TimeField('Start Time', format='%H:%M',
+                           validators=[InputRequired()], widget=TimeInput())
+    door_time = TimeField('Door Time', format='%H:%M',
+                          validators=[InputRequired()], widget=TimeInput())
 
     price = DecimalField('Ticket Price ($)', places=2, validators=[
         InputRequired(), NumberRange(min=0, message="Price must be positive")
@@ -116,10 +117,16 @@ class EventForm(FlaskForm):
 
     submit = SubmitField("Create")
 
+    # ---- Custom field validations ----
     def validate_door_time(self, field):
         if self.start_time.data and field.data and field.data > self.start_time.data:
             raise ValidationError("Door time must be before the start time.")
 
+    def validate_date(self, field):
+        """Prevent creating events in the past."""
+        if field.data and field.data < date.today():
+            flash("You cannot create an event in the past.", "danger")
+            raise ValidationError("Event date cannot be in the past.")
 
 
 # -------------------
@@ -141,21 +148,24 @@ class PurchaseForm(FlaskForm):
 
 class EventUpdateForm(FlaskForm):
     title = StringField('Event Title', validators=[InputRequired()])
+    venue = StringField('Venue', validators=[InputRequired()])
     date = DateField('Event Date', format='%Y-%m-%d', validators=[InputRequired()])
+
     genre = SelectField(
-    'Genre',
-    choices=[
-        ('House', 'House'),
-        ('Rock', 'Rock'),
-        ('Jazz', 'Jazz'),
-        ('Pop', 'Pop'),
-        ('Hip Hop', 'Hip Hop'),
-        ('R&B', 'R&B'), 
-        ('Electronic', 'Electronic'),
-        ('Classical', 'Classical')
-    ],
-    validators=[InputRequired()]
+        'Genre',
+        choices=[
+            ('House', 'House'),
+            ('Rock', 'Rock'),
+            ('Jazz', 'Jazz'),
+            ('Pop', 'Pop'),
+            ('Hip Hop', 'Hip Hop'),
+            ('R&B', 'R&B'),
+            ('Electronic', 'Electronic'),
+            ('Classical', 'Classical')
+        ],
+        validators=[InputRequired()]
     )
+
     price = DecimalField('Ticket Price ($)', places=2, validators=[
         InputRequired(), NumberRange(min=0, message="Price must be positive")
     ])
