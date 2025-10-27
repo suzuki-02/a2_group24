@@ -5,18 +5,19 @@
   <h2 class="mb-4 fw-bold">{{ genre_name }} Events</h2>
 
   {% if events %}
-    <div id="event-grid">
-      {% include "_event_cards.html" %}
-    </div>
+  <div id="event-grid">
+    {% include "_event_cards.html" %}
+  </div>
   {% else %}
-    <p class="text-muted text-center mt-4">No upcoming {{ genre_name }} events found.</p>
+  <p class="text-muted text-center mt-4">No upcoming {{ genre_name }} events found.</p>
   {% endif %}
 
   <div class="mt-4">
-    <a href="{{ url_for('main.index') }}" class="btn btn-outline-primary">
+    <a href="{{ url_for('main.index') }}" class="btn btn-back">
       ← Back to all events
     </a>
   </div>
+
 </div>
 
 {% endblock %}

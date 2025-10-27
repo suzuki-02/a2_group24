@@ -1,6 +1,6 @@
 import re
 from flask_wtf import FlaskForm
-from wtforms import SelectField
+from wtforms import SelectField   # ✅ add this import
 from wtforms.fields import (
     TextAreaField, SubmitField, StringField, PasswordField,
     DateField, TimeField, DecimalField, IntegerField, BooleanField
@@ -39,7 +39,7 @@ class RegisterForm(FlaskForm):
     confirm = PasswordField("Confirm Password")
     submit = SubmitField("Register")
 
-    # ---- Phone validation ----
+    # ---- Phone validation (AU mobile + landline) ----
     def validate_contact_number(self, field):
         raw = field.data or ""
         num = re.sub(r"[()\s-]+", "", raw)

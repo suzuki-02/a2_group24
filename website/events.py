@@ -28,6 +28,7 @@ def create():
         print("Door time:", form.door_time.data, "| Start time:", form.start_time.data)
 
         # Check that start time is after door time
+        
         if form.start_time.data and form.door_time.data:
             if form.start_time.data <= form.door_time.data:
                 flash("Start time must be after door time.", "danger")
