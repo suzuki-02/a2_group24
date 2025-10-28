@@ -1,20 +1,10 @@
 <!-- Featured Events Carousel -->
+
 <div class="container-fluid px-0 mb-4">
   <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
 
-    <!-- Carousel indicators -->
-    <div class="carousel-indicators">
-      {% for event in featured_events %}
-      <button type="button"
-              data-bs-target="#carouselExampleCaptions"
-              data-bs-slide-to="{{ loop.index0 }}"
-              {% if loop.first %}class="active" aria-current="true"{% endif %}
-              aria-label="Slide {{ loop.index }}">
-      </button>
-      {% endfor %}
-    </div>
-
     <!-- Carousel inner -->
+
     <div class="carousel-inner rounded-3 shadow-sm">
       {% for event in featured_events %}
       <div class="carousel-item {% if loop.first %}active{% endif %}">
@@ -25,13 +15,16 @@
         </div>
 
         <!-- Caption with overlay -->
-        <div class="carousel-caption d-none d-md-block position-absolute bottom-0 start-0 end-0 p-4"
+
+        <div class="carousel-caption d-block position-absolute bottom-0 start-0 end-0 p-4"
              style="background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.3) 100%);">
 
           <!-- Title -->
+
           <h3 class="fw-bold text-white mb-1">{{ event.title }}</h3>
 
           <!-- Date and Status -->
+
           <p class="text-light mb-2">
             <small>
               <i class="bi bi-calendar-event"></i>
@@ -48,13 +41,15 @@
           </p>
 
           <!-- Description -->
-          <p class="text-light">{{ event.description or 'No description available.' }}</p>
+
+          <p class="text-light mb-0">{{ event.description or 'No description available.' }}</p>
         </div>
       </div>
       {% endfor %}
     </div>
 
     <!-- Carousel controls -->
+     
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
@@ -66,3 +61,22 @@
 
   </div>
 </div>
+
+<!-- Responsive caption styling -->
+
+<style>
+  @media (max-width: 767.98px) {
+    .carousel-caption {
+      padding: 1rem !important;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.6) 60%, rgba(0, 0, 0, 0.2) 100%) !important;
+    }
+
+    .carousel-caption h3 {
+      font-size: 1.1rem;
+    }
+
+    .carousel-caption p {
+      font-size: 0.85rem;
+    }
+  }
+</style>
