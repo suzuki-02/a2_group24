@@ -2,7 +2,8 @@
 {% from 'bootstrap5/form.html' import render_form %}
 
 {% block title %}
-  EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif %}{% if event.genre %} ({{ event.genre }}){% endif %}
+EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif %}{% if event.genre %} ({{ event.genre
+}}){% endif %}
 {% endblock %}
 
 {% block content %}
@@ -14,57 +15,75 @@
 
   <div class="row mt-5 mb-3">
     <!-- Left column: Event Info -->
-    <div class="col">
-      <h1 class="mb-0">{{ event.title }}</h1>
+    <div class="col-lg-8 mb-5">
+      <h1 class="fw-bold mb-3">{{ event.title }}</h1>
 
-      <hr />
+      <div class="mb-4">
+        <h4 class="fw-semibold mb-3 border-bottom pb-2">Details</h4>
 
-      <h2>Details</h2>
-      <p><strong>Venue:</strong> {{ event.venue }}</p>
-      <p><strong>Genre:</strong> {{ event.genre }}</p>
-      <p><strong>Date:</strong> {{ event.date }}</p>
-      <p><strong>Door Time:</strong> {{ event.door_time }}</p>
-      <p><strong>Start Time:</strong> {{ event.start_time }}</p>
-      <p>
-        <strong>Status:</strong>
-        {% if event.status == 'Open' %}
-        <span class="badge bg-success">Open</span>
-        {% elif event.status == 'Cancelled' %}
-        <span class="badge bg-secondary">Cancelled</span>
-        {% elif event.status == 'Sold Out' %}
-        <span class="badge bg-danger">Sold Out</span>
-        {% endif %}
-      </p>
-      <p>
-        <strong>Created by:</strong> {{ event.creator.first_name }} {{ event.creator.last_name }}
-      </p>
-
-      <hr />
-
-      <h2>Description</h2>
-      <p>{{ event.description }}</p>
-
-      <hr />
-
-      <!-- Comments -->
-      <div class="row">
-        <div class="col-md-12">
-          <h2>Comments</h2>
-        </div>
+        <ul class="list-unstyled mb-0">
+          <li class="mb-2">
+            <strong>Venue:</strong> {{ event.venue or "Venue TBA" }}
+          </li>
+          <li class="mb-2">
+            <strong>Genre:</strong> {{ event.genre or "Unspecified" }}
+          </li>
+          <li class="mb-2">
+            <strong>Date:</strong>
+            {{ event.date.strftime('%a, %-d %b %Y') if event.date else "TBA" }}
+          </li>
+          <li class="mb-2">
+            <strong>Door Time:</strong>
+            {{ event.door_time.strftime('%I:%M %p') if event.door_time else "TBA" }}
+          </li>
+          <li class="mb-2">
+            <strong>Start Time:</strong>
+            {{ event.start_time.strftime('%I:%M %p') if event.start_time else "TBA" }}
+          </li>
+          <li class="mb-2">
+            <strong>Status:</strong>
+            {% if event.status == 'Open' %}
+            <span class="badge bg-success">Open</span>
+            {% elif event.status == 'Cancelled' %}
+            <span class="badge bg-secondary">Cancelled</span>
+            {% elif event.status == 'Sold Out' %}
+            <span class="badge bg-danger">Sold Out</span>
+            {% else %}
+            <span class="badge bg-dark">Unknown</span>
+            {% endif %}
+          </li>
+          <li>
+            <strong>Created by:</strong>
+            {{ event.creator.first_name }} {{ event.creator.last_name }}
+          </li>
+        </ul>
       </div>
 
-      <div class="row">
-        {{ render_form(cform,"/events/{0}/comment".format(event.id)) }}
-        {% for comment in event.comments %}
-        <div class="col-md-12">
-          <b>{{ comment.user }}
-            <span class="ml-2 text-muted">{{ comment.created_at.strftime("%b %d, %Y %I:%M %p") }}</span>
-          </b>
-          <p>{{ comment.text }}</p>
+      <div class="mb-5">
+        <h4 class="fw-semibold mb-3 border-bottom pb-2">Description</h4>
+        <p class="text-light-emphasis">{{ event.description or "No description available." }}</p>
+      </div>
+
+      <div>
+        <h4 class="fw-semibold mb-3 border-bottom pb-2">Comments</h4>
+        <div class="mb-4">
+          {{ render_form(cform, "/events/{0}/comment".format(event.id)) }}
         </div>
+
+        {% for comment in event.comments %}
+        <div class="border-bottom pb-2 mb-3">
+          <strong>{{ comment.user }}</strong>
+          <small class="text-muted ms-2">
+            {{ comment.created_at.strftime("%a, %d %b %Y %I:%M %p") }}
+          </small>
+          <p class="mt-2 mb-0">{{ comment.text }}</p>
+        </div>
+        {% else %}
+        <p class="text-muted">No comments yet. Be the first to share your thoughts.</p>
         {% endfor %}
       </div>
     </div>
+
 
     <!-- Right column: Ticket Info -->
     <div class="col-lg-4 col-md-5">
