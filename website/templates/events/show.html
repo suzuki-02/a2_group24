@@ -1,60 +1,79 @@
 {% extends 'base.html' %} {% from 'bootstrap5/form.html' import render_form %}
 {% block content %}
 
-<div class="container mt-5">
+<div class="container mt-5 event-details">
   <!-- Centered Event Image -->
   <div class="text-center mb-4">
-    <img src="{{ event.image }}" alt="{{ event.title }}" class="img-fluid rounded shadow-sm" style="max-width: 600px" />
+    <img
+      src="{{ event.image }}"
+      alt="{{ event.title }}"
+      class="img-fluid rounded shadow-sm"
+      style="max-width: 600px"
+    />
   </div>
 
   <div class="row mt-5 mb-3">
     <!-- Left column: Event Info -->
     <div class="col">
-      <h1 class="mb-0">{{ event.title }}</h1>
-
-      <hr />
+      <h1 class="mb-5">{{ event.title }}</h1>
 
       <h2>Details</h2>
-      <p><strong>Venue:</strong> {{ event.venue }}</p>
-      <p><strong>Genre:</strong> {{ event.genre }}</p>
-      <p><strong>Date:</strong> {{ event.date }}</p>
-      <p><strong>Door Time:</strong> {{ event.door_time }}</p>
-      <p><strong>Start Time:</strong> {{ event.start_time }}</p>
-      <p>
-        <strong>Status:</strong>
-        {% if event.status == 'Open' %}
-        <span class="badge bg-success">Open</span>
-        {% elif event.status == 'Cancelled' %}
-        <span class="badge bg-secondary">Cancelled</span>
-        {% elif event.status == 'Sold Out' %}
-        <span class="badge bg-danger">Sold Out</span>
-        {% endif %}
-      </p>
-      <p>
-        <strong>Created by:</strong> {{ event.creator.first_name }} {{
-        event.creator.last_name }}
-      </p>
-
       <hr />
+      <div class="row g-2 detail-grid">
+        <div class="col-12"><strong>Venue:</strong> {{ event.venue }}</div>
+        <div class="col-12"><strong>Genre:</strong> {{ event.genre }}</div>
+
+        <div class="col-6"><strong>Date:</strong> {{ event.date }}</div>
+        <div class="col-6">
+          <strong>Status:</strong>
+          {% if event.status == 'Open' %}
+          <span class="badge bg-success">Open</span>
+          {% elif event.status == 'Cancelled' %}
+          <span class="badge bg-secondary">Cancelled</span>
+          {% elif event.status == 'Sold Out' %}
+          <span class="badge bg-danger">Sold Out</span>
+          {% elif event.status == 'Inactive' %}
+          <span
+            class="badge bg-warning text-dark"
+            >Inactive</span
+          >
+          {% endif %}
+        </div>
+
+        <div class="col-6">
+          <strong>Door Time:</strong> {{ event.door_time }}
+        </div>
+        <div class="col-6">
+          <strong>Start Time:</strong> {{ event.start_time }}
+        </div>
+
+        <div class="col-12">
+          <strong>Created by:</strong> {{ event.creator.first_name }} {{
+          event.creator.last_name }}
+        </div>
+      </div>
 
       <h2>Description</h2>
-      <p>{{ event.description }}</p>
-
       <hr />
+      <p>{{ event.description }}</p>
 
       <!-- Comments -->
       <div class="row">
         <div class="col-md-12">
           <h2>Comments</h2>
+          <hr />
         </div>
       </div>
 
       <div class="row">
         {{ render_form(cform,"/events/{0}/comment".format(event.id)) }} {% for
         comment in event.comments %}
-        <div class="col-md-12">
-          <b>{{ comment.user }}
-            <span class="ml-2 text-muted">{{ comment.created_at.strftime("%b %d, %Y %I:%M %p") }}</span>
+        <div class="col-md-12 mt-4">
+          <b
+            >{{ comment.user }}
+            <span class="ml-2 text-muted"
+              >{{ comment.created_at.strftime("%b %d, %Y %I:%M %p") }}</span
+            >
           </b>
           <p>{{ comment.text }}</p>
         </div>
@@ -72,7 +91,12 @@
             {% if event.status == "Open" %}
             <p><strong>Price per ticket:</strong> ${{ event.price }}</p>
             <p><strong>Available:</strong> {{ event.quantity }} tickets</p>
-            <button type="button" class="btn btn-ticket w-100" data-bs-toggle="modal" data-bs-target="#bookModal">
+            <button
+              type="button"
+              class="btn btn-ticket w-100 mt-3"
+              data-bs-toggle="modal"
+              data-bs-target="#bookModal"
+            >
               Purchase Tickets
             </button>
             {% else %}
@@ -84,25 +108,30 @@
         </div>
       </div>
 
-
       <!-- Booking Modal -->
-      <div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+      <div
+        class="modal fade"
+        id="bookModal"
+        tabindex="-1"
+        aria-labelledby="bookModalLabel"
+        aria-hidden="true"
+      >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="bookModalLabel">Confirm Booking</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
             <div class="modal-body">
               <!-- Purchase Form -->
               {{ render_form(oform, url_for('event.purchase', id=event.id)) }}
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                Close
-              </button>
-              <!-- <button type="button" class="btn btn-primary">Confirm</button> -->
-            </div>
+            <!-- <button type="button" class="btn btn-primary">Confirm</button> -->
           </div>
         </div>
       </div>

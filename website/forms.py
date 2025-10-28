@@ -135,7 +135,7 @@ class EventForm(FlaskForm):
 
 class CommentForm(FlaskForm):
     text = TextAreaField('Add your Comment', [InputRequired()])
-    submit = SubmitField('Create')
+    submit = SubmitField('Post Comment')
 
 
 class PurchaseForm(FlaskForm):

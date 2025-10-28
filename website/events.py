@@ -176,6 +176,7 @@ def update(id):
         event.quantity = form.quantity.data
         event.description = form.description.data
         event.featuredevent = form.featuredevent.data
+        event.update_status()
         db.session.commit()
         flash("Event updated successfully", "success")
         return redirect(url_for('event.show', id=event.id))

@@ -21,3 +21,6 @@ instance/*.sqlite
 
 # Zone Identifier files
 *:Zone.Identifier
+
+# app.log
+app.log
