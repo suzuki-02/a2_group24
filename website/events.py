@@ -55,12 +55,12 @@ def create():
 
         db.session.add(event)
         db.session.commit()
-        print(f"✅ Event added with ID {event.id}")
+        print(f"Event added with ID {event.id}")
         flash("Event created successfully!", "success")
         return redirect(url_for('event.show', id=event.id))
     else:
         if request.method == 'POST':
-            print('❌ Validation failed:', form.errors)
+            print('Validation failed:', form.errors)
 
     return render_template('events/create.html', form=form)
 
@@ -163,25 +163,32 @@ def update(id):
         return redirect(url_for('event.show', id=event.id))
 
     form = EventUpdateForm()
+
     if form.validate_on_submit():
         if form.image.data:
             event.image = check_upload_file(form)
+
         event.title = form.title.data
         event.date = form.date.data
         event.price = form.price.data
         event.quantity = form.quantity.data
         event.description = form.description.data
+        event.featuredevent = bool(form.featuredevent.data)
+
         db.session.commit()
         flash("Event updated successfully", "success")
         return redirect(url_for('event.show', id=event.id))
+
     elif request.method == 'GET':
         form.title.data = event.title
         form.date.data = event.date
         form.price.data = event.price
         form.quantity.data = event.quantity
         form.description.data = event.description
+        form.featuredevent.data = event.featuredevent
 
     return render_template('events/create.html', form=form, event=event)
+
 
 
 @events_bp.route('/<id>/cancel')

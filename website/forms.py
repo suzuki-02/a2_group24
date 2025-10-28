@@ -145,7 +145,6 @@ class PurchaseForm(FlaskForm):
     ])
     submit = SubmitField('Purchase')
 
-
 class EventUpdateForm(FlaskForm):
     title = StringField('Event Title', validators=[InputRequired()])
     venue = StringField('Venue', validators=[InputRequired()])
