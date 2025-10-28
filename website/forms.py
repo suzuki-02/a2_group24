@@ -151,15 +151,18 @@ class EventUpdateForm(FlaskForm):
     venue = StringField('Venue', validators=[InputRequired()])
     date = DateField('Event Date', format='%Y-%m-%d', validators=[InputRequired()])
 
+    start_time = TimeField('Start Time', format='%H:%M',
+                           validators=[InputRequired()], widget=TimeInput())
+    door_time = TimeField('Door Time', format='%H:%M',
+                          validators=[InputRequired()], widget=TimeInput())
+
     genre = SelectField(
         'Genre',
         choices=[
-            ('House', 'House'),
             ('Rock', 'Rock'),
             ('Jazz', 'Jazz'),
             ('Pop', 'Pop'),
             ('Hip Hop', 'Hip Hop'),
-            ('R&B', 'R&B'),
             ('Electronic', 'Electronic'),
             ('Classical', 'Classical')
         ],
@@ -173,6 +176,7 @@ class EventUpdateForm(FlaskForm):
         InputRequired(), NumberRange(min=0, message="Ticket quantity cannot be negative")
     ])
     description = TextAreaField('Description', validators=[InputRequired()])
+    featuredevent = BooleanField('Make this a featured event')
     image = FileField('Event Image', validators=[
         FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')
     ])
