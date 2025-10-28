@@ -60,16 +60,32 @@ EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif 
       </div>
 
       <div class="mb-5">
-        <h4 class="fw-semibold mb-3 border-bottom pb-2">Description</h4>
-        <p class="text-light-emphasis">{{ event.description or "No description available." }}</p>
+        <h4 class="fw-semibold mb-3 border-bottom border-secondary pb-2 text-white">Description</h4>
+        <p class="text-light lh-lg" style="font-size: 1.05rem;">
+          {{ event.description or "No description available." }}
+        </p>
       </div>
+
 
       <div>
         <h4 class="fw-semibold mb-3 border-bottom pb-2">Comments</h4>
+
+        {% if current_user.is_authenticated %}
+        <!-- Comment form for logged-in users -->
         <div class="mb-4">
           {{ render_form(cform, "/events/{0}/comment".format(event.id)) }}
         </div>
+        {% else %}
+        <!-- Message + login link for guests -->
+        <div class="alert alert-dark text-light bg-transparent border-secondary mb-4">
+          <p class="mb-0">
+            <a href="{{ url_for('auth.login') }}" class="text-info text-decoration-none fw-semibold">Log in</a>
+            to post a comment.
+          </p>
+        </div>
+        {% endif %}
 
+        <!-- Existing comments -->
         {% for comment in event.comments %}
         <div class="border-bottom pb-2 mb-3">
           <strong>{{ comment.user }}</strong>
@@ -82,6 +98,7 @@ EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif 
         <p class="text-muted">No comments yet. Be the first to share your thoughts.</p>
         {% endfor %}
       </div>
+
     </div>
 
 
