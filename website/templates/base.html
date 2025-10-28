@@ -135,8 +135,11 @@
           <ul class="list-unstyled">
             <li><a href="/events/books" class="text-light text-decoration-none">My Bookings</a></li>
             <li><a href="/events/create" class="text-light text-decoration-none">Create Event</a></li>
+
+            {% if not current_user.is_authenticated %}
             <li><a href="{{ url_for('auth.login') }}" class="text-light text-decoration-none">Login</a></li>
             <li><a href="{{ url_for('auth.register') }}" class="text-light text-decoration-none">Sign Up</a></li>
+            {% endif %}
           </ul>
         </div>
 
