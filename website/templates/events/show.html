@@ -1,6 +1,11 @@
-{% extends 'base.html' %} {% from 'bootstrap5/form.html' import render_form %}
-{% block content %}
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
 
+{% block title %}
+  EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif %}{% if event.genre %} ({{ event.genre }}){% endif %}
+{% endblock %}
+
+{% block content %}
 <div class="container mt-5">
   <!-- Centered Event Image -->
   <div class="text-center mb-4">
@@ -31,8 +36,7 @@
         {% endif %}
       </p>
       <p>
-        <strong>Created by:</strong> {{ event.creator.first_name }} {{
-        event.creator.last_name }}
+        <strong>Created by:</strong> {{ event.creator.first_name }} {{ event.creator.last_name }}
       </p>
 
       <hr />
@@ -50,8 +54,8 @@
       </div>
 
       <div class="row">
-        {{ render_form(cform,"/events/{0}/comment".format(event.id)) }} {% for
-        comment in event.comments %}
+        {{ render_form(cform,"/events/{0}/comment".format(event.id)) }}
+        {% for comment in event.comments %}
         <div class="col-md-12">
           <b>{{ comment.user }}
             <span class="ml-2 text-muted">{{ comment.created_at.strftime("%b %d, %Y %I:%M %p") }}</span>
@@ -84,7 +88,6 @@
         </div>
       </div>
 
-
       <!-- Booking Modal -->
       <div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -94,14 +97,12 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <!-- Purchase Form -->
               {{ render_form(oform, url_for('event.purchase', id=event.id)) }}
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Close
               </button>
-              <!-- <button type="button" class="btn btn-primary">Confirm</button> -->
             </div>
           </div>
         </div>
@@ -109,5 +110,4 @@
     </div>
   </div>
 </div>
-
 {% endblock %}
