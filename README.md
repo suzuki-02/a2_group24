@@ -19,7 +19,7 @@
   - `/events/<id>/cancel` → Cancel an event (only accessible by the event creator; action cannot be undone)
 
 - **Error Handler**
-  - `/xxx` -> Lands in error page
+  - `/xxx` → Lands in error page
 
 ---
 

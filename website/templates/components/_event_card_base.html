@@ -2,11 +2,11 @@
   <div class="card border-0 shadow-sm rounded-3 overflow-hidden h-100">
     <!-- Event Image -->
     <a href="{{ url_for('event.show', id=event.id) }}">
-    <img
-      src="{{ event.image }}"
-      class="card-img-top"
-      alt="{{ event.title }}"
-      style="height: 200px; object-fit: cover"
+      <img
+        src="{{ event.image }}"
+        class="card-img-top"
+        alt="{{ event.title }}"
+        style="height: 200px; object-fit: cover"
     /></a>
 
     <!-- Badges -->
@@ -22,6 +22,10 @@
     <span class="badge bg-danger position-absolute top-0 end-0 m-2">
       Sold Out
     </span>
+    {% elif event.status == 'Inactive' %}
+    <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2"
+      >Inactive</span
+    >
     {% endif %}
 
     <!-- Card Body -->

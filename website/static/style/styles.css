@@ -611,3 +611,56 @@ input#SearchForm.form-control::placeholder {
   border-color: #007bff;
 }
 
+/* Responsive adjustments on event details page */
+
+@media (max-width: 768px) {
+  /* Reduce margin at the top of image */
+  .event-details {
+    margin-top: 1rem !important;
+  }
+
+  /* Reduce the margin at the bottom of image */
+  .event-details .row {
+    margin-top: 1rem !important;
+  }
+
+  /* Center title */
+  .event-details h1 {
+    text-align: center;
+  }
+
+  /* Center image and reduce its width */
+  .event-details img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100% !important;
+    height: auto;
+  }
+
+  /* Reduce image's margin on top & bottom */
+  .event-details .text-center {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Add padding on top of ticket card */
+  .ticket-card {
+    margin-top: 1.5rem;
+  }
+
+  .detail-grid {
+    max-width: 100% !important;
+  }
+}
+
+.event-details hr {
+  border-color: rgba(255,255,255,.50); /* brighter line */
+}
+
+.event-details h2 {
+  margin-top: 1.5rem;
+}
+
+.detail-grid {
+  max-width: 350px;
+}

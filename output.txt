@@ -1,0 +1,77 @@
+Devika Bindhyarani (11):
+      feat(search): working navbar search + results page linking to event.show
+      Resolved sqlite conflict after stash pop
+      feat: add working search functionality with results page
+      fix: working search functionality
+      feat: update Quick Links section in footer
+      style: update UI for less Bootstrappy look (custom CSS + index changes)
+      Merge branch 'main' of https://github.com/suzuki-02/a2_group24 into feature/links
+      search feature fix
+      feature search merged
+      fixed links and some change in the css
+      fix(auth): add duplicate email check and flash message
+
+Gabe Gleeson (2):
+      Merge pull request #36 from suzuki-02/gabe-dev
+      Merge pull request #51 from suzuki-02/gabe-dev
+
+Haris Malik (2):
+      feat: update for Haris-first-branch
+      password constraints, fixed header,
+
+HarisMal1k (3):
+      Merge branch 'main' into Haris-first-branch
+      error handling, nav bar clean, password constrain
+      error handle, password cnstraint, nav clean
+
+Tony (4):
+      Merge pull request #37 from suzuki-02/tony-dev
+      Merge pull request #57 from suzuki-02/tony-dev
+      Merge pull request #65 from suzuki-02/tony-dev
+      Merge pull request #67 from suzuki-02/tony-dev
+
+gabegleeson (17):
+      Refined layout and styling: improved login page, added homepage placeholders, updated base template
+      Save local changes before pulling
+      Keep local sitedata.sqlite during merge
+      Resolved merge conflict: kept remote sitedata.sqlite
+      Add AJAX event filters, update category links, and restructure templates
+      Stop tracking local SQLite database
+      Add search functionality
+      Resolve merge conflicts
+      Resolve merge conflicts
+      Show event status on featured events carousel and update templates
+      Update .gitignore to exclude database files
+      Save current progress before merging into main
+      Polish dark theme styling across event cards, filters, forms, and modals
+      Event images not displaying on main page
+      User cannot create a past event
+      Fixed date filters and cleaned up views.py
+      Fix check box glitch on create form
+
+tonytornado (24):
+      first commit
+      Remove uv and switch to manual pip setup for local environment
+      Add Event and Comment functionality with DB integration and file upload
+      Add user auth (register, login, logout) with updated User model and routes
+      Add ticket purchase flow, update models, and auto event status updates
+      minor update on comment date
+      fix flash and update user auth
+      minor fix in code and comment
+      Add My Events page and routes (update, cancel) + minor navbar and flash updates
+      Unify event card design, enhance update route, and polish UI/UX styling
+      merge conflict solved
+      error in merge
+      Resolve merge error
+      gitignore update
+      fixed merge conflicts
+      Remove Zone.Identifier files and update .gitignore
+      Remove Zone.Identifier files and update .gitignore
+      cleaned up files
+      solved conflict
+      fixed error handler, now working
+      restore functionalities
+      update event model, form, create.html
+      fixed update route
+      designed responsive detail page and fixed badges
+

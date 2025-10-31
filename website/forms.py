@@ -98,9 +98,9 @@ class EventForm(FlaskForm):
 
     # Times
     start_time = TimeField('Start Time', format='%H:%M',
-                           validators=[InputRequired()], widget=TimeInput())
+                        validators=[InputRequired()], widget=TimeInput())
     door_time = TimeField('Door Time', format='%H:%M',
-                          validators=[InputRequired()], widget=TimeInput())
+                        validators=[InputRequired()], widget=TimeInput())
 
     price = DecimalField('Ticket Price ($)', places=2, validators=[
         InputRequired(), NumberRange(min=0, message="Price must be positive")
@@ -135,7 +135,7 @@ class EventForm(FlaskForm):
 
 class CommentForm(FlaskForm):
     text = TextAreaField('Add your Comment', [InputRequired()])
-    submit = SubmitField('Create')
+    submit = SubmitField('Post Comment')
 
 
 class PurchaseForm(FlaskForm):
@@ -167,6 +167,12 @@ class EventUpdateForm(FlaskForm):
         ],
         validators=[InputRequired()]
     )
+
+    # Times
+    start_time = TimeField('Start Time', format='%H:%M',
+                        validators=[InputRequired()], widget=TimeInput())
+    door_time = TimeField('Door Time', format='%H:%M',
+                        validators=[InputRequired()], widget=TimeInput())
 
     price = DecimalField('Ticket Price ($)', places=2, validators=[
         InputRequired(), NumberRange(min=0, message="Price must be positive")

@@ -33,7 +33,7 @@ def register_error_handlers(app):
 # ---- Application Factory ----
 def create_app():
     app = Flask(__name__)
-    app.debug = True  # Set to False in production
+    app.debug = False  # Set to False in production
     app.secret_key = 'somesecretkey'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
 
