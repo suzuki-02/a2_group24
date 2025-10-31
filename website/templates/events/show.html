@@ -1,13 +1,8 @@
-{% extends 'base.html' %}
-{% from 'bootstrap5/form.html' import render_form %}
-
-{% block title %}
-EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif %}{% if event.genre %} ({{ event.genre
-}}){% endif %}
-{% endblock %}
-
-{% block content %}
-<div class="container mt-5">
+{% extends 'base.html' %} {% from 'bootstrap5/form.html' import render_form %}
+{% block title %} EventFinder | {{ event.title }}{% if event.venue %} @ {{
+event.venue }}{% endif %}{% if event.genre %} ({{ event.genre }}){% endif %} {%
+endblock %} {% block content %}
+<div class="container mt-5 event-details">
   <!-- Centered Event Image -->
   <div class="text-center mb-4">
     <img
@@ -39,11 +34,13 @@ EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif 
           </li>
           <li class="mb-2">
             <strong>Door Time:</strong>
-            {{ event.door_time.strftime('%I:%M %p') if event.door_time else "TBA" }}
+            {{ event.door_time.strftime('%I:%M %p') if event.door_time else
+            "TBA" }}
           </li>
           <li class="mb-2">
             <strong>Start Time:</strong>
-            {{ event.start_time.strftime('%I:%M %p') if event.start_time else "TBA" }}
+            {{ event.start_time.strftime('%I:%M %p') if event.start_time else
+            "TBA" }}
           </li>
           <li class="mb-2">
             <strong>Status:</strong>
@@ -53,10 +50,13 @@ EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif 
             <span class="badge bg-secondary">Cancelled</span>
             {% elif event.status == 'Sold Out' %}
             <span class="badge bg-danger">Sold Out</span>
+            {% elif event.status == 'Inactive' %}
+            <span class="badge bg-warning text-dark">Inactive</span>
             {% else %}
             <span class="badge bg-dark">Unknown</span>
             {% endif %}
           </li>
+
           <li>
             <strong>Created by:</strong>
             {{ event.creator.first_name }} {{ event.creator.last_name }}
@@ -65,12 +65,15 @@ EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif 
       </div>
 
       <div class="mb-5">
-        <h4 class="fw-semibold mb-3 border-bottom border-secondary pb-2 text-white">Description</h4>
-        <p class="text-light lh-lg" style="font-size: 1.05rem;">
+        <h4
+          class="fw-semibold mb-3 border-bottom border-secondary pb-2 text-white"
+        >
+          Description
+        </h4>
+        <p class="text-light lh-lg" style="font-size: 1.05rem">
           {{ event.description or "No description available." }}
         </p>
       </div>
-
 
       <div>
         <h4 class="fw-semibold mb-3 border-bottom pb-2">Comments</h4>
@@ -82,9 +85,15 @@ EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif 
         </div>
         {% else %}
         <!-- Message + login link for guests -->
-        <div class="alert alert-dark text-light bg-transparent border-secondary mb-4">
+        <div
+          class="alert alert-dark text-light bg-transparent border-secondary mb-4"
+        >
           <p class="mb-0">
-            <a href="{{ url_for('auth.login') }}" class="text-info text-decoration-none fw-semibold">Log in</a>
+            <a
+              href="{{ url_for('auth.login') }}"
+              class="text-info text-decoration-none fw-semibold"
+              >Log in</a
+            >
             to post a comment.
           </p>
         </div>
@@ -100,12 +109,12 @@ EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif 
           <p class="mt-2 mb-0">{{ comment.text }}</p>
         </div>
         {% else %}
-        <p class="text-muted">No comments yet. Be the first to share your thoughts.</p>
+        <p class="text-muted">
+          No comments yet. Be the first to share your thoughts.
+        </p>
         {% endfor %}
       </div>
-
     </div>
-
 
     <!-- Right column: Ticket Info -->
     <div class="col-lg-4 col-md-5">
@@ -157,7 +166,11 @@ EventFinder | {{ event.title }}{% if event.venue %} @ {{ event.venue }}{% endif 
               {{ render_form(oform, url_for('event.purchase', id=event.id)) }}
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
                 Close
               </button>
             </div>

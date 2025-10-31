@@ -626,15 +626,15 @@ input#SearchForm.form-control::placeholder {
 
   /* Center title */
   .event-details h1 {
-    text-align: center;
+    text-align: center !important;
   }
 
   /* Center image and reduce its width */
   .event-details img {
-    display: block;
-    margin: 0 auto;
+    display: block !important;
+    margin: 0 auto !important;
     max-width: 100% !important;
-    height: auto;
+    height: auto !important;
   }
 
   /* Reduce image's margin on top & bottom */
