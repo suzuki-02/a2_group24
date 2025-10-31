@@ -55,7 +55,7 @@
 </div>
 
 <style>
-  /* Genre Grid (Dark Theme) */
+  /* Genre Grid */
   .genre-filter-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -75,12 +75,6 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   }
 
-  .genre-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 18px rgba(0, 255, 255, 0.15);
-    border-color: white;
-  }
-
   .genre-image-wrapper {
     width: 100%;
     height: 100px;
@@ -98,10 +92,6 @@
     transition: filter 0.25s ease;
   }
 
-  .genre-card:hover .genre-image {
-    filter: brightness(1.15) contrast(1.15);
-  }
-
   .genre-name {
     font-weight: 600;
     color: #e0e0e0;
@@ -113,19 +103,6 @@
     transition: color 0.25s ease;
   }
 
-  .genre-card:hover .genre-name {
-    color: white;
-  }
-
-  /* Optional active state for selected genre */
-  .genre-card.active {
-    border-color: white;
-    box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
-  }
-
-  .genre-card.active .genre-name {
-    color: white;
-  }
 </style>
 
 
